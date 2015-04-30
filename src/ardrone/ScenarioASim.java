@@ -22,26 +22,26 @@ public class ScenarioASim implements World{
         public void start(){
             
             createActor(); //Actor der Drone auf Index 0
-            getActor(0).setAttribute("Name", "ARDrone");
+            getActor(0).createAttribute("Name", "ARDrone");
             getActor(0).setPos(10, 10, 1);
             
             createActor(); //Wand auf Y=0 auf Index 1
-            getActor(1).setAttribute("Name", "WallAtBot");
+            getActor(1).createAttribute("Name", "WallAtBot");
             
             
             createActor(); //Wand auf X=Raumlänge auf Index 2
-            getActor(2).setAttribute("Name", "WallAtRight");
+            getActor(2).createAttribute("Name", "WallAtRight");
             getActor(2).setPos(500, 0, 0);
             
             createActor(); //Wand auf Y=Raumbreite auf Index 3
-            getActor(3).setAttribute("Name", "WallAtTop");
+            getActor(3).createAttribute("Name", "WallAtTop");
             getActor(3).setPos(0, 500, 0);
             
             createActor(); //Wand auf X=0 auf Index 4
-            getActor(4).setAttribute("Name", "WallAtLeft");
+            getActor(4).createAttribute("Name", "WallAtLeft");
             
             createActor(); //Decke auf Index 5
-            getActor(5).setAttribute("Name", "Ceiling");
+            getActor(5).createAttribute("Name", "Ceiling");
             getActor(2).setPos(0, 0, 300);
             
 
