@@ -5,25 +5,32 @@
  */
 package ardrone;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Oliver
  */
 public class World {
     
-	ArrayList <Actor> actorList = new ArrayList;
+	ArrayList <Actor> actorList = new ArrayList<Actor>();
 	
-	public void getActor(int index){
-		return actorList;
+	public Actor getActor(int index){
+		return actorList.get(index);
 	}
 	public void createActor(int index){
-		
+		Actor a = new Actor();
+                actorList.add(a);
 	}
 	public void removeActor(Actor a){
-		
+		if(actorList.remove(a)){
+                    System.out.println("Actor wurde entfernt");
+                } else {
+                    System.out.println("Actor nicht vorhanden");
+                }
 	}
-	public void getActorsCount(){
-		return int;
+	public int getActorsCount(){
+		return actorList.size();
 	}
 	public void setChanged(){
 		
