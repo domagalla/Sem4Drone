@@ -5,12 +5,16 @@
  */
 package ardrone;
 
+import java.util.HashMap;
+
 /**
  *
  * @author Oliver
  */
 public class Actor {
- 
+    
+    
+        private HashMap<String, Object> attributeList;
 	private double PosX, PosY, PosZ, RotX, RotY, RotZ;
 	
 	public double getPosX(){
@@ -42,18 +46,18 @@ public class Actor {
 		PosZ = z;
 	}	
 	public void createAttribut(String name, Object value){
-		
+		attributeList.put(name, value);
 	}
 	public void setAttribute(String name, Object value){
-		
+		attributeList.replace(name, value);
 	}
 	public Object getAttribut(String name){
-		
+		return attributeList.get(name);
 	}
 	public void deleteAttribut(String name){
-		
+		attributeList.remove(name);
 	}
 	public HashMap<String, Object> getAllAttributes(){
-		
+		return attributeList;
 	}
 }
