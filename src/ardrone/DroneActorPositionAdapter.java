@@ -14,13 +14,20 @@ import java.util.Observer;
  */
 public class DroneActorPositionAdapter implements Observer{
 
+    ScenarioADroneControl droneCtrl = new ScenarioADroneControl();
+    
     @Override
     public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        double[] dronePos = (double[]) arg;
+        notifyDroneControl(dronePos[0], dronePos[1], dronePos[2]);
     }
     
     public void notifyDroneControl(double x, double y, double z){
-        
+        Object[] pos = new Object[3];
+        pos[0] = x;
+        pos[1] = y;
+        pos[2] = z;
+        droneCtrl.sendCommand("UpdatePos", pos);
     }
     
     
