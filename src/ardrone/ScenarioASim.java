@@ -13,6 +13,7 @@ import java.util.Observable;
  * @author Oliver
  */
 public class ScenarioASim implements World{
+    
         ArrayList <Actor> actorList = new ArrayList<Actor>();
 	
 	public Actor getActor(int index){
