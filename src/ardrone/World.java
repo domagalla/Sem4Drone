@@ -6,18 +6,20 @@
 package ardrone;
 
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.Observer;
 
 /**
  *
  * @author Oliver
  */
-public class World implements WorldControl{
+public class World extends Observable implements WorldControl {
     
         ArrayList <Actor> actorList = new ArrayList<Actor>();
 	
 	public Actor getActor(int index){
 		return actorList.get(index);
+     
 	}
 	public void createActor(){
 		Actor a = new Actor();
@@ -33,14 +35,11 @@ public class World implements WorldControl{
 	public int getActorsCount(){
 		return actorList.size();
 	}
-	public void setChanged(){
-		
-	}
         
-	public void notifyObservers(Object arg){
-		getActor(0).getPosX();
-                getActor(0).getPosY();
-                getActor(0).getPosZ();
-	}
+        public void aktualisiere(Object arg){
+            this.setChanged();
+            this.notifyObservers(arg);
+        }
+        
 
 }
