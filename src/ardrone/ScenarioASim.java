@@ -19,10 +19,19 @@ public class ScenarioASim{
         
         public void start(){
             World myWorld = new World();
+            myWorld.addObserver(new DroneActorPositionAdapter());
+            myWorld.addObserver(new TextVisualizer());
+            
+            
             
             myWorld.createActor(); //Actor der Drone auf Index 0
             myWorld.getActor(0).createAttribute("Name", "ARDrone");
             myWorld.getActor(0).setPos(10, 10, 1);
+            double[] dronePos = new double[3];
+            dronePos[0] = myWorld.getActor(0).getPosX();
+            dronePos[1] = myWorld.getActor(0).getPosY();
+            dronePos[2] = myWorld.getActor(0).getPosZ();
+            myWorld.aktualisiere(dronePos);
             
             myWorld.createActor(); //Wand auf Y=0 auf Index 1
             myWorld.getActor(1).createAttribute("Name", "WallAtBot");
@@ -44,7 +53,7 @@ public class ScenarioASim{
             myWorld.getActor(2).setPos(0, 0, 300);
             
             
-            System.out.println(myWorld.getActor(4).getAttribute("Name"));
+            //System.out.println(myWorld.getActor(4).getAttribute("Name"));
         }
 	
 }
