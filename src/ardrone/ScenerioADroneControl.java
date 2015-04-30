@@ -11,4 +11,11 @@ package ardrone;
  */
 public class ScenerioADroneControl {
     
+    public void sendCommand(String cmd, Object[] parameters){
+        
+    }
+    
+    public void flyScenario(){
+        
+    }
 }
