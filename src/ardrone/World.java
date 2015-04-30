@@ -6,36 +6,19 @@
 package ardrone;
 
 import java.util.ArrayList;
+import java.util.Observer;
 
 /**
  *
  * @author Oliver
  */
-public class World {
+public interface World extends Observer{
     
-	ArrayList <Actor> actorList = new ArrayList<Actor>();
 	
-	public Actor getActor(int index){
-		return actorList.get(index);
-	}
-	public void createActor(int index){
-		Actor a = new Actor();
-                actorList.add(a);
-	}
-	public void removeActor(Actor a){
-		if(actorList.remove(a)){
-                    System.out.println("Actor wurde entfernt");
-                } else {
-                    System.out.println("Actor nicht vorhanden");
-                }
-	}
-	public int getActorsCount(){
-		return actorList.size();
-	}
-	public void setChanged(){
-		
-	}
-	public void notifyObservers(Object arg){
-		
-	}
+	public Actor getActor(int index);
+	public void createActor(int index);
+	public void removeActor(Actor a);
+	public int getActorsCount();
+	public void setChanged();
+	public void notifyObservers(Object arg);
 }
