@@ -60,4 +60,7 @@ public class Actor {
 	public HashMap<String, Object> getAllAttributes(){
 		return attributeList;
 	}
+        public void setAllAttributes(){
+                
+        }
 }
