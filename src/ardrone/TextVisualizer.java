@@ -9,6 +9,15 @@ package ardrone;
  *
  * @author Oliver
  */
-public class TextVisualizer {
+public class TextVisualizer implements Observer{
     
+	public void update(Observable o, Object arg){
+		
+	}
+	public void visualize(){
+		System.out.println("Drone bewegt sich");
+	}
+	
+	
+	
 }

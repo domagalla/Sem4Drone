@@ -11,4 +11,24 @@ package ardrone;
  */
 public class World {
     
+	ArrayList <Actor> actorList = new ArrayList;
+	
+	public void getActor(int index){
+		return actorList;
+	}
+	public void createActor(int index){
+		
+	}
+	public void removeActor(Actor a){
+		
+	}
+	public void getActorsCount(){
+		return int;
+	}
+	public void setChanged(){
+		
+	}
+	public void notifyObservers(Object arg){
+		
+	}
 }
