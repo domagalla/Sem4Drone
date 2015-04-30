@@ -11,4 +11,21 @@ package ardrone;
  */
 public class SimpleARDroneModel {
     
+    public void move(double x, double y, double z){
+        
+    }
+    public void rotate(double x, double y, double z){
+        
+    }
+    public void stop(){
+        
+    }
+    public void start(){
+        
+    }
+    public void interpretCommand(String cmd, Object[] parameters){
+        //In AT-Commands überestzen
+    }
+    
+            
 }
