@@ -26,7 +26,7 @@ public class ScenarioASim{
             
             myWorld.createActor(); //Actor der Drone auf Index 0
             myWorld.getActor(0).createAttribute("Name", "ARDrone");
-            myWorld.getActor(0).setPos(10, 10, 1);
+            myWorld.getActor(0).setPos(10, 10, 0);
             double[] dronePos = new double[3];
             dronePos[0] = myWorld.getActor(0).getPosX();
             dronePos[1] = myWorld.getActor(0).getPosY();
@@ -35,7 +35,6 @@ public class ScenarioASim{
             
             myWorld.createActor(); //Wand auf Y=0 auf Index 1
             myWorld.getActor(1).createAttribute("Name", "WallAtBot");
-            
             
             myWorld.createActor(); //Wand auf X=Raumlänge auf Index 2
             myWorld.getActor(2).createAttribute("Name", "WallAtRight");
