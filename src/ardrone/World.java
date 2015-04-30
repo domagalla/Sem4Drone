@@ -17,7 +17,7 @@ public interface World extends Observer{
         ArrayList <Actor> actorList = new ArrayList<Actor>();
 	
 	public Actor getActor(int index);
-	public void createActor(int index);
+	public void createActor();
 	public void removeActor(Actor a);
 	public int getActorsCount();
 	public void setChanged();
