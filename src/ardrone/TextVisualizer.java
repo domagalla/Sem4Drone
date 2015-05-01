@@ -13,15 +13,18 @@ import java.util.Observer;
  * @author Oliver
  */
 public class TextVisualizer implements Observer{
+    
+    
     @Override
     public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
-        
+        if(!arg.getClass().getName().equals("ardrone.Actor")){
+            visualize((double[])arg);
+        }
     }
     
-    public void visualize(){
-	System.out.println("Drone bewegt sich");
+    public void visualize(double[] pos){
+	System.out.println("Drone bewegt sich auf " + pos[0] +", "+ pos[1] +", "+ pos[2]);
+        System.out.println("Drohne ist um "+ pos[3] +" Grad rotiert");
     }
 
     
