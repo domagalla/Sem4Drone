@@ -16,7 +16,7 @@ public class SimpleARDroneModel extends World implements DroneControl {
     
     public void move(double x, double y, double z){
        //Position der Drohne wird in Abhängigkeit von der aktuellen Rotation der Drohne verändert
-        droneActor.setPos(droneActor.getPosX()+x*Math.cos(Math.toRadians(droneActor.getRotZ())),
+        droneActor.setPos(droneActor.getPosX()-x*Math.cos(Math.toRadians(droneActor.getRotZ())),
                           droneActor.getPosY()+x*Math.sin(Math.toRadians(droneActor.getRotZ())),
                           z);
        // System.out.println("Drohne hat sich bewegt!");
