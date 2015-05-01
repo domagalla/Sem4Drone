@@ -18,8 +18,14 @@ public class DroneActorPositionAdapter implements Observer{
     
     @Override
     public void update(Observable o, Object arg) {
-        double[] dronePos = (double[]) arg;
-        notifyDroneControl(dronePos[0], dronePos[1], dronePos[2]);
+        if(arg.getClass().getName().equals("ardrone.Actor")){
+            Object[] actor = new Object[1];
+            actor[0] = arg;
+            droneCtrl.sendCommand("droneActor", actor);
+        } else {
+            double[] dronePos = (double[]) arg;
+            notifyDroneControl(dronePos[0], dronePos[1], dronePos[2]);
+        }
     }
     
     public void notifyDroneControl(double x, double y, double z){
