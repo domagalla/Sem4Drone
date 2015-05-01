@@ -49,6 +49,7 @@ public class ScenarioADroneControl implements DronePosition{
         //Sonst fliege das Scenario weiter
         model.move(10, 0, 0); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
         model.rotate(0, 0, 5);
+        
         }
         
     }
