@@ -22,22 +22,22 @@ public class ScenarioASim{
         }
         
         public void start(){
+            //Erstelle Welt und füge Observer hinzu
             World myWorld = new World();
             myWorld.addObserver(new DroneActorPositionAdapter());
             myWorld.addObserver(new TextVisualizer());
             
             
             
-            myWorld.createActor(); //Actor der Drone auf Index 0
+            myWorld.createActor(); //Actor der Drohne auf Index 0
             myWorld.getActor(0).createAttribute("Name", "ARDrone");
             myWorld.getActor(0).setPos(10, 10, 0);
             double[] dronePos = new double[4];
+            myWorld.giveDroneObject(); //Actor der Drohne an SimpleARDroneModel übergeben
             
-          
+            //Timer um die DrohnenPosition regelmäßig anzeigen zu lassen
             Timer timer = new Timer();
-
-
-            // Start in einer Sekunde dann Ablauf alle 5 Sekunden
+            // Start in einer halben Sekunde dann Ablauf jede Sekunde
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -47,10 +47,8 @@ public class ScenarioASim{
                     dronePos[3] = myWorld.getActor(0).getRotZ();
                     myWorld.aktualisiere(dronePos);
                 }
-            }, 1000, 1000);
-            //myWorld.aktualisiere(dronePos);
+            }, 500, 1000);
        
-            myWorld.giveDroneObject();
             
             myWorld.createActor(); //Wand auf Y=0 auf Index 1
             myWorld.getActor(1).createAttribute("Name", "WallAtBot");
@@ -71,7 +69,6 @@ public class ScenarioASim{
             myWorld.getActor(2).setPos(0, 0, 300);
             
             
-            //System.out.println(myWorld.getActor(4).getAttribute("Name"));
         }
 	
 }
