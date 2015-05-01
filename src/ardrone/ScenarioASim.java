@@ -31,6 +31,7 @@ public class ScenarioASim{
             
             myWorld.createActor(); //Actor der Drohne auf Index 0
             myWorld.getActor(0).createAttribute("Name", "ARDrone");
+            myWorld.getActor(0).createAttribute("Finnished", false); //Wird true wenn Scenario beendet
             myWorld.getActor(0).setPos(0, 0, 0);
             double[] dronePos = new double[4];
             myWorld.giveDroneObject(); //Actor der Drohne an SimpleARDroneModel übergeben
@@ -41,11 +42,18 @@ public class ScenarioASim{
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+
                     dronePos[0] = myWorld.getActor(0).getPosX();
                     dronePos[1] = myWorld.getActor(0).getPosY();
                     dronePos[2] = myWorld.getActor(0).getPosZ();
                     dronePos[3] = myWorld.getActor(0).getRotZ();
                     myWorld.aktualisiere(dronePos);
+                    
+                    if((boolean)myWorld.getActor(0).getAttribute("Finnished")){
+                        if(this.cancel()){
+                            System.out.println("Scenario erfolgreich beendet.");
+                        }
+                    }
                 }
             }, 500, 1000);
        
