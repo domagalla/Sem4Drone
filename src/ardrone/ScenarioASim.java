@@ -31,7 +31,7 @@ public class ScenarioASim{
             
             myWorld.createActor(); //Actor der Drohne auf Index 0
             myWorld.getActor(0).createAttribute("Name", "ARDrone");
-            myWorld.getActor(0).setPos(10, 10, 0);
+            myWorld.getActor(0).setPos(0, 0, 0);
             double[] dronePos = new double[4];
             myWorld.giveDroneObject(); //Actor der Drohne an SimpleARDroneModel übergeben
             
