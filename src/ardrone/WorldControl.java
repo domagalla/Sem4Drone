@@ -1,0 +1,19 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ardrone;
+
+/**
+ *
+ * @author Oliver
+ */
+public interface WorldControl {
+    
+    public Actor getActor(int index);
+    public void createActor();
+    public void removeActor(Actor a);
+    public int getActorsCount();
+        
+}
