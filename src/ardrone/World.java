@@ -15,7 +15,8 @@ import java.util.Timer;
  * @author Oliver
  */
 public class World extends Observable implements WorldControl {
-
+        
+        //Liste mit Actors, wird in ScenarioASim gefüllt
         ArrayList <Actor> actorList = new ArrayList<Actor>();
 	
 	public Actor getActor(int index){
@@ -26,6 +27,7 @@ public class World extends Observable implements WorldControl {
 		Actor a = new Actor();
                 actorList.add(a);
 	}
+        
 	public void removeActor(Actor a){
 		if(actorList.remove(a)){
                     System.out.println("Actor wurde entfernt");
@@ -33,15 +35,17 @@ public class World extends Observable implements WorldControl {
                     System.out.println("Actor nicht vorhanden");
                 }
 	}
+        
 	public int getActorsCount(){
 		return actorList.size();
 	}
-        
+        //Nur einmal aufgerufen um eine Referenz auf das droneActor Objekt zum Model zu bekommen
         public void giveDroneObject(){
             this.setChanged();
             this.notifyObservers(actorList.get(0));
         }
         
+        //stetig aufgerufen um die aktuelle Position der Drone an die Observer zu geben
         public void aktualisiere(Object arg){
             this.setChanged();
             this.notifyObservers(arg);
