@@ -5,6 +5,10 @@
  */
 package ardrone;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+
 
 /**
  *
@@ -27,11 +31,26 @@ public class ScenarioASim{
             myWorld.createActor(); //Actor der Drone auf Index 0
             myWorld.getActor(0).createAttribute("Name", "ARDrone");
             myWorld.getActor(0).setPos(10, 10, 0);
-            double[] dronePos = new double[3];
-            dronePos[0] = myWorld.getActor(0).getPosX();
-            dronePos[1] = myWorld.getActor(0).getPosY();
-            dronePos[2] = myWorld.getActor(0).getPosZ();
-            myWorld.aktualisiere(dronePos);
+            double[] dronePos = new double[4];
+            
+          
+            Timer timer = new Timer();
+
+
+            // Start in einer Sekunde dann Ablauf alle 5 Sekunden
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    dronePos[0] = myWorld.getActor(0).getPosX();
+                    dronePos[1] = myWorld.getActor(0).getPosY();
+                    dronePos[2] = myWorld.getActor(0).getPosZ();
+                    dronePos[3] = myWorld.getActor(0).getRotZ();
+                    myWorld.aktualisiere(dronePos);
+                }
+            }, 1000, 1000);
+            //myWorld.aktualisiere(dronePos);
+       
+            myWorld.giveDroneObject();
             
             myWorld.createActor(); //Wand auf Y=0 auf Index 1
             myWorld.getActor(1).createAttribute("Name", "WallAtBot");
