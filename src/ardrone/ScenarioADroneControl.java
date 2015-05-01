@@ -16,6 +16,7 @@ public class ScenarioADroneControl implements DronePosition{
     double posX;
     double posY;
     double posZ;
+    double rotZ;
     
     
     public void sendCommand(String cmd, Object[] parameters){
@@ -25,6 +26,7 @@ public class ScenarioADroneControl implements DronePosition{
             posX = (double)parameters[0];
             posY = (double)parameters[1];
             posZ = (double)parameters[2];
+            rotZ = (double)parameters[3];
             
             flyScenario();
             
@@ -40,14 +42,13 @@ public class ScenarioADroneControl implements DronePosition{
         if(!model.getStarted()){
             model.start();
         }
-        //Wenn die Drohne das Ziel erreicht hat, dann stoppe die Drohne
-        if(posX==10 && posY==10&&posZ==0){
+        //Wenn die Drohne das Ziel(Einen Kreis fliegen) erreicht hat, dann stoppe die Drohne
+        if(rotZ==360){
             model.stop();
         } else {
         //Sonst fliege das Scenario weiter
-        model.move(1, 0, 0); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
+        model.move(10, 0, 0); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
         model.rotate(0, 0, 5);
-        model.stop();
         }
         
     }
