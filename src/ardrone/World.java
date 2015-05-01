@@ -8,13 +8,14 @@ package ardrone;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
 
 /**
  *
  * @author Oliver
  */
 public class World extends Observable implements WorldControl {
-    
+
         ArrayList <Actor> actorList = new ArrayList<Actor>();
 	
 	public Actor getActor(int index){
@@ -35,6 +36,11 @@ public class World extends Observable implements WorldControl {
 	public int getActorsCount(){
 		return actorList.size();
 	}
+        
+        public void giveDroneObject(){
+            this.setChanged();
+            this.notifyObservers(actorList.get(0));
+        }
         
         public void aktualisiere(Object arg){
             this.setChanged();
