@@ -16,14 +16,15 @@ public class SimpleARDroneModel extends World implements DroneControl {
     
     public void move(double x, double y, double z){
        //Position der Drohne wird in Abhängigkeit von der aktuellen Rotation der Drohne verändert
-        droneActor.setPos(droneActor.getPosX()-x*Math.cos(Math.toRadians(droneActor.getRotZ())),
+        droneActor.setPos(droneActor.getPosX()+x*Math.cos(Math.toRadians(droneActor.getRotZ())),
                           droneActor.getPosY()+x*Math.sin(Math.toRadians(droneActor.getRotZ())),
-                          z);
+                          droneActor.getPosZ()+z);
        // System.out.println("Drohne hat sich bewegt!");
        //  System.out.println(droneActor.getPosX() +" "+ droneActor.getPosY());
     }
     public void rotate(double x, double y, double z){
         //Die Drohne rotiert ohne ihre Position zu verändern
+        //Die Drohne rotiert gegen den Uhrzeigersinn (negative Rotation = im Uhrzeigersinn)
          droneActor.setRot(0, 0, droneActor.getRotZ()+z);
     }
     public void stop(){
@@ -36,7 +37,7 @@ public class SimpleARDroneModel extends World implements DroneControl {
     public void start(){
         //System.out.println("Drohne wurde gestartet!");
         started = true;
-        droneActor.setPos(10, 10, 50);
+        droneActor.setPos(250, 50, 100);
         
     }
     public void interpretCommand(String cmd, Object[] parameters){
