@@ -13,8 +13,8 @@ import java.util.HashMap;
  */
 public class Actor {
     
-    
-        private HashMap<String, Object> attributeList;
+        //Hashmap zur Identifizierung des Actors
+        private HashMap<String, Object> attributeList = new HashMap<String, Object>();
 	private double PosX, PosY, PosZ, RotX, RotY, RotZ;
 	
 	public double getPosX(){
@@ -44,22 +44,28 @@ public class Actor {
 		PosX = x;
 		PosY = y;
 		PosZ = z;
-	}	
-	public void createAttribut(String name, Object value){
+	}
+        //Neuse Attribut anlegen
+	public void createAttribute(String name, Object value){
 		attributeList.put(name, value);
 	}
+        //Vorhandenes Attribut ändern
 	public void setAttribute(String name, Object value){
 		attributeList.replace(name, value);
 	}
-	public Object getAttribut(String name){
+        //Gibt den Wert des gesuchten Attributs zurück
+	public Object getAttribute(String name){
 		return attributeList.get(name);
 	}
+        //Löscht das gesuchte Attribut
 	public void deleteAttribut(String name){
 		attributeList.remove(name);
 	}
+        //Gibt die Hashmap mit allen Attributen zurück
 	public HashMap<String, Object> getAllAttributes(){
 		return attributeList;
 	}
+        //Setzt alle Attribute durch mitgabe einer HashMap (Bsp. zum Laden aus einer Datei)
         public void setAllAttributes(HashMap<String, Object> loadFile){
                 attributeList = loadFile;
         }
