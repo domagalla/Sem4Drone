@@ -17,7 +17,9 @@ public class ScenarioADroneControl implements DronePosition{
     double posY;
     double posZ;
     
+    
     public void sendCommand(String cmd, Object[] parameters){
+        //Wenn dir die Drohnen Position übergeben wird, lege sie auf deine eigenen Variablen und fliege das Scenario weiter
         if(cmd.equals("UpdatePos")){
             
             posX = (double)parameters[0];
@@ -25,20 +27,27 @@ public class ScenarioADroneControl implements DronePosition{
             posZ = (double)parameters[2];
             
             flyScenario();
+            
         } else if(cmd.equals("droneActor")){
+           //Falls das Drohnen Object übergeben wird, schicke es weiter an das model
             model.interpretCommand("droneActor", parameters);
+            
         }
     }
     
     public void flyScenario(){
+        //Wenn die Drohne nicht gestartet ist, dann starte
         if(!model.getStarted()){
             model.start();
         }
-        if(posX==10 && posY==10){
+        //Wenn die Drohne das Ziel erreicht hat, dann stoppe die Drohne
+        if(posX==10 && posY==10&&posZ==0){
             model.stop();
         } else {
-            model.move(1, 0, 0); //fliege im Kreis mit einem Winkel von 5 Grad
-            model.rotate(0, 0, 5);
+        //Sonst fliege das Scenario weiter
+        model.move(1, 0, 0); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
+        model.rotate(0, 0, 5);
+        model.stop();
         }
         
     }
