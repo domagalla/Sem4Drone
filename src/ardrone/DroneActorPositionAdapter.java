@@ -18,16 +18,19 @@ public class DroneActorPositionAdapter implements Observer{
     
     @Override
     public void update(Observable o, Object arg) {
+        //Falls die Drone übergeben wird, reiche sie weiter an ScenarioADroneControl
         if(arg.getClass().getName().equals("ardrone.Actor")){
             Object[] actor = new Object[1];
             actor[0] = arg;
             droneCtrl.sendCommand("droneActor", actor);
         } else {
+            //Ansonsten benachrichtige die DroneControl über die aktuelle Position
             double[] dronePos = (double[]) arg;
             notifyDroneControl(dronePos[0], dronePos[1], dronePos[2]);
         }
     }
     
+    //Stecke die Position in ein Object Array und schick es an ScenarioADroneControl
     public void notifyDroneControl(double x, double y, double z){
         Object[] pos = new Object[3];
         pos[0] = x;
