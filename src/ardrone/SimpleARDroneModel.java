@@ -28,7 +28,8 @@ public class SimpleARDroneModel extends World implements DroneControl {
          droneActor.setRot(0, 0, droneActor.getRotZ()+z);
     }
     public void stop(){
-        // System.out.println("Drohne wurde gestoppt!");
+        droneActor.setPos(droneActor.getPosX(), droneActor.getPosX(), 0);
+        System.out.println("Drohne ist gelandet");
         
         //started = false; //würde Endlosschleife verursachen?
         
