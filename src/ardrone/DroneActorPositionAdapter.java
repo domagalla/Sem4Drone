@@ -26,12 +26,12 @@ public class DroneActorPositionAdapter implements Observer{
         } else {
             //Ansonsten benachrichtige die DroneControl über die aktuelle Position
             double[] dronePos = (double[]) arg;
-            notifyDroneControl(dronePos[0], dronePos[1], dronePos[2]);
+            notifyDroneControl(dronePos[0], dronePos[1], dronePos[2], dronePos[3]);
         }
     }
     
     //Stecke die Position in ein Object Array und schick es an ScenarioADroneControl
-    public void notifyDroneControl(double x, double y, double z){
+    public void notifyDroneControl(double x, double y, double z, double rotZ){
         Object[] pos = new Object[3];
         pos[0] = x;
         pos[1] = y;
