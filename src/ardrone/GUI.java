@@ -23,9 +23,7 @@ import javafx.stage.Stage;
  
 public class GUI extends Application implements Runnable{
  
-    double x = 300;
-        double y = 150;
-        double  z = 50;
+   
         
       Pane rootPane = new Pane();
         
@@ -36,7 +34,13 @@ public class GUI extends Application implements Runnable{
         GridPane infoPane = new GridPane();
         GridPane gridpane = new GridPane();   
         
-        
+       
+        Label posXLabel = new Label("PosX:  "); 
+        Label posYLabel = new Label("PosY:  "); 
+        Label posZLabel = new Label("PosZ:  "); 
+        Label rotXLabel = new Label("RotX:  "); 
+        Label rotYLabel = new Label("RotY:  "); 
+        Label rotZLabel = new Label("RotZ:  "); 
         
     @Override
     public void start(Stage primaryStage) {
@@ -46,12 +50,7 @@ public class GUI extends Application implements Runnable{
         Label sideViewLabel = new Label("SideView");
         Label frontViewLabel = new Label("FrontView");
         
-        Label posXLabel = new Label("PosX:  " + x); 
-        Label posYLabel = new Label("PosY:  "); 
-        Label posZLabel = new Label("PosZ:  "); 
-        Label rotXLabel = new Label("RotX:  "); 
-        Label rotYLabel = new Label("RotY:  "); 
-        Label rotZLabel = new Label("RotZ:  "); 
+       
        
         
         
@@ -99,7 +98,7 @@ public class GUI extends Application implements Runnable{
  
 
         
-        zeichneDrone();
+//        zeichneDrone(1,1,1);
         rootPane.getChildren().add(gridpane);
         
  
@@ -107,7 +106,7 @@ public class GUI extends Application implements Runnable{
         //primaryStage.getStylesheets().add("style.css");
         primaryStage.show();
     }
-    public void zeichneDrone(){
+    public void zeichneDrone(double x, double y, double z){
         Circle droneTop = CircleBuilder.create()
             .radius(10)
             .centerX(z)
@@ -131,8 +130,19 @@ public class GUI extends Application implements Runnable{
             .build();
         droneFront.setFill(Color.RED);
         frontViewPane.getChildren().addAll(droneFront);
+        System.out.print(y);
+        /*rootPane.requestLayout();
+        gridpane.requestLayout();
+        frontViewPane.requestLayout();*/
+        
     } 
             
+    public void zeichneStats(double x, double y, double z){
+        
+        posXLabel.setText("PosX: "+ x);
+        System.out.print(y);
+        
+    }
    /* public static void main(String[] args) {
         launch(args);
     }*/

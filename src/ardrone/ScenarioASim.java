@@ -28,7 +28,7 @@ public class ScenarioASim {
             myWorld.addObserver(new TextVisualizer());
            
             //Thread für die GUI erstellen 
-            GUI g = new GUI();
+            /*GUI g = new GUI();
             new Thread(new Runnable() {
 
 			@Override
@@ -37,7 +37,7 @@ public class ScenarioASim {
                          
 			}
 		}).start();            
-	
+	*/
           ///
 
             myWorld.createActor(); //Actor der Drohne auf Index 0
