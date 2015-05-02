@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 
 
  
-public class GUI extends Application {
+public class GUI extends Application implements Runnable{
  
     double x = 300;
         double y = 150;
@@ -41,12 +41,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("ARDrone Stats Control");
-        
-       
-        
-       
-        
-        
+ 
         Label topViewLabel = new Label("TopView");
         Label sideViewLabel = new Label("SideView");
         Label frontViewLabel = new Label("FrontView");
@@ -141,5 +136,11 @@ public class GUI extends Application {
    /* public static void main(String[] args) {
         launch(args);
     }*/
+
+    @Override
+    public void run() {
+        launch();
+   
+    }
 
 }

@@ -21,12 +21,13 @@ import javafx.stage.Stage;
  *
  * @author Oliver
  */
-public class TextVisualizer extends Application implements Observer{
-    
+public class TextVisualizer implements Observer{
+ 
+
+   /* 
     double x = 300;
     double y = 150;
     double  z = 50;
-        
     boolean single = true;
         
     Pane rootPane = new Pane();
@@ -42,14 +43,10 @@ public class TextVisualizer extends Application implements Observer{
             launch();
         }
         */
+    /*
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("ARDrone Stats Control");
-        
-       
-        
-       
-        
         
         Label topViewLabel = new Label("TopView");
         Label sideViewLabel = new Label("SideView");
@@ -62,7 +59,6 @@ public class TextVisualizer extends Application implements Observer{
         Label rotYLabel = new Label("RotY:  "); 
         Label rotZLabel = new Label("RotZ:  "); 
        
-        
         
         topViewPane.setMinSize(500, 300);
         topViewPane.setMaxSize(500, 300);
@@ -150,6 +146,8 @@ public class TextVisualizer extends Application implements Observer{
     
     @Override
     public void update(Observable o, Object arg) {
+       
+        
         //nur ausführen wenn nicht nur die Drohne für das Model übergeben wird
         if(!arg.getClass().getName().equals("ardrone.Actor")){
             visualize((double[])arg);
@@ -162,10 +160,11 @@ public class TextVisualizer extends Application implements Observer{
 	System.out.println("Drone bewegt sich auf " + pos[0] +", "+ pos[1] +", "+ pos[2]);
         System.out.println("Drohne ist um "+ pos[3] +" Grad rotiert");
         
-        if(single){
+      /*  if(single){
             launch();
             single = false;
-        }
+        }*/
     }
-	
+
+    
 }

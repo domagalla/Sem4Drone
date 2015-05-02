@@ -14,7 +14,7 @@ import java.util.TimerTask;
  *
  * @author Oliver
  */
-public class ScenarioASim{
+public class ScenarioASim {
         
         public static void main(String[] arg){
             ScenarioASim mySim = new ScenarioASim();
@@ -26,9 +26,20 @@ public class ScenarioASim{
             World myWorld = new World();
             myWorld.addObserver(new DroneActorPositionAdapter());
             myWorld.addObserver(new TextVisualizer());
-            
-            
-            
+           
+            //Thread für die GUI erstellen 
+            GUI g = new GUI();
+            new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+                            g.run();
+                         
+			}
+		}).start();            
+	
+          ///
+
             myWorld.createActor(); //Actor der Drohne auf Index 0
             myWorld.getActor(0).createAttribute("Name", "ARDrone");
             myWorld.getActor(0).createAttribute("Finnished", false); //Wird true wenn Scenario beendet
