@@ -79,11 +79,7 @@ public class GUI extends JFrame implements Runnable {
         g.drawString("ARDrone", (int)Math.round(x)+115,(int)Math.round(y)+110);
         g.setColor(Color.black);
         g.drawString("X:        "+Double.toString(x)+"        Y:        "+Double.toString(y), 400, 400);
-        try {
-            this.wait(500);
-        } catch (InterruptedException ex) {
-            
-        }
+
         
     }
 
