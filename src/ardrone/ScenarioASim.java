@@ -35,6 +35,7 @@ public class ScenarioASim {
             myWorld.getActor(0).setPos(0, 0, 0);
             double[] dronePos = new double[4];
             myWorld.giveDroneObject(); //Actor der Drohne an SimpleARDroneModel übergeben
+
             
             //Timer um die DrohnenPosition regelmäßig anzeigen zu lassen
             Timer timer = new Timer();
@@ -75,6 +76,8 @@ public class ScenarioASim {
             myWorld.createActor(); //Decke auf Index 5
             myWorld.getActor(5).createAttribute("Name", "Ceiling");
             myWorld.getActor(2).setPos(0, 0, 300);
+            
+            myWorld.giveRoomBoundaries(); //Raumbegrenzung an die GUI übergeben
             
             
         }
