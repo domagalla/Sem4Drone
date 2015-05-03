@@ -148,11 +148,14 @@ public class TextVisualizer implements Observer{
     @Override
     public void update(Observable o, Object arg) {
        
-        
         //nur ausführen wenn nicht nur die Drohne für das Model übergeben wird
         if(!arg.getClass().getName().equals("ardrone.Actor")){
-            visualize((double[])arg);
-           
+            double[] dArray = (double[])arg;
+            if(dArray[0] == 1337){ //Zur Identifikation der Raumbegrenzungs-Übergabe, ist der Wert auf Index 0 immer 1337
+                
+            } else {
+                visualize((double[])arg);
+            }
         }
     }
     
