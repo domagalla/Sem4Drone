@@ -77,7 +77,7 @@ public class GUI extends JFrame implements Runnable {
         g.fillOval((int)Math.round(x)+100,(int)Math.round(y)+100, 10, 10);
         g.drawString("ARDrone", (int)Math.round(x)+115,(int)Math.round(y)+110);
         g.setColor(Color.black);
-        g.drawString("X:        "+Double.toString(x)+"        Y:        "+Double.toString(y), 400, 400);
+        g.drawString("X:        "+Double.toString(x)+"        Y:        "+Double.toString(y)+"        Z:        "+Double.toString(z), 400, 400);
 
         
     }
