@@ -7,12 +7,10 @@ package ardrone;
 
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
-import java.util.Timer;
 
 /**
  *
- * @author Oliver
+ * @author Oliver Kaup, Izabela Wojcicki, Marvin Voß, Niklas Domagalla
  */
 public class World extends Observable implements WorldControl {
         

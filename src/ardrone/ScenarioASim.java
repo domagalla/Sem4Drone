@@ -12,7 +12,7 @@ import java.util.TimerTask;
 
 /**
  *
- * @author Oliver
+ * @author Oliver Kaup
  */
 public class ScenarioASim {
         

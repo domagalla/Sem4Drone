@@ -7,7 +7,7 @@ package ardrone;
 
 /**
  *
- * @author Oliver
+ * @author Niklas Domagalla
  */
 public interface WorldControl {
     

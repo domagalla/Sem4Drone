@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author Oliver
+ * @author Marvin Voß
  */
 public class Actor {
     

@@ -7,7 +7,7 @@ package ardrone;
 
 /**
  *
- * @author Oliver
+ * @author Oliver Kaup
  */
 public interface DronePosition {
     

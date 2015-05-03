@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Oliver
+ * @author Niklas Domagalla
  */
 public class TextVisualizer implements Observer{
  

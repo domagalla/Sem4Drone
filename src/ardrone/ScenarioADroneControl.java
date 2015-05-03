@@ -7,7 +7,7 @@ package ardrone;
 
 /**
  *
- * @author Oliver
+ * @author Izabela Wojcicki
  */
 public class ScenarioADroneControl implements DronePosition{
     

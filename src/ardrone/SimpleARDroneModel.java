@@ -7,7 +7,7 @@ package ardrone;
 
 /**
  *
- * @author Oliver
+ * @author Oliver Kaup
  */
 public class SimpleARDroneModel extends World implements DroneControl {
     

@@ -10,7 +10,7 @@ import java.util.Observer;
 
 /**
  *
- * @author Oliver
+ * @author Oliver Kaup
  */
 public class DroneActorPositionAdapter implements Observer{
 
