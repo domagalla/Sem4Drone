@@ -13,6 +13,7 @@ public class ScenarioADroneControl implements DronePosition{
     
     SimpleARDroneModel model = new SimpleARDroneModel();
     
+    boolean firstLoop = true;
     double posX;
     double posY;
     double posZ;
@@ -28,7 +29,7 @@ public class ScenarioADroneControl implements DronePosition{
             posZ = (double)parameters[2];
             rotZ = (double)parameters[3];
             
-            flyScenario();
+            fly8Scenario();
             
         } else if(cmd.equals("droneActor")){
            //Falls das Drohnen Object übergeben wird, schicke es weiter an das model
@@ -50,6 +51,27 @@ public class ScenarioADroneControl implements DronePosition{
         model.move(10, 0, 0); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
         model.rotate(0, 0, 5);
         
+        }
+        
+    }
+    
+    public void fly8Scenario(){
+        if(!model.getStarted()){
+            model.start();
+            model.rotate(0, 0, 90);
+        }
+        if(rotZ == 470){
+            firstLoop = false;
+        }
+        if(rotZ == 90 && !firstLoop){
+            model.stop();
+        }
+        if(firstLoop){
+            model.move(10, 0, 0);
+            model.rotate(0, 0, 5);
+        } else {
+            model.move(10, 0, 0);
+            model.rotate(0, 0, -5);
         }
         
     }
