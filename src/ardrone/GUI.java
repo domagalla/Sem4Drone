@@ -73,7 +73,7 @@ public class GUI extends JFrame implements Runnable {
     
     @Override
     public void paint(Graphics g){
-        g.clearRect(0, 0, getWidth(), getHeight());
+       // g.clearRect(0, 0, getWidth(), getHeight());
         g.fillOval((int)Math.round(x)+100,(int)Math.round(y)+100, 10, 10);
         g.drawString("ARDrone", (int)Math.round(x)+115,(int)Math.round(y)+110);
         g.setColor(Color.black);

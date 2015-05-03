@@ -60,7 +60,7 @@ public class ScenarioADroneControl implements DronePosition{
             model.start();
             model.rotate(0, 0, 90);
         }
-        if(rotZ == 470){
+        if(rotZ == 450){
             firstLoop = false;
         }
         if(rotZ == 90 && !firstLoop){
