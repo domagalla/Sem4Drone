@@ -39,6 +39,18 @@ public class World extends Observable implements WorldControl {
 	public int getActorsCount(){
 		return actorList.size();
 	}
+        public void giveRoomBoundaries(){
+            double[] bound = new double[]{
+                1337,
+                actorList.get(1).getPosY(),
+                actorList.get(2).getPosX(),
+                actorList.get(3).getPosY(),
+                actorList.get(4).getPosX(),
+            };
+            this.hasChanged();
+            this.notifyObservers(bound);
+        }
+        
         //Nur einmal aufgerufen um eine Referenz auf das droneActor Objekt zum Model zu bekommen
         public void giveDroneObject(){
             this.setChanged();
