@@ -29,7 +29,7 @@ public class TextVisualizer implements Observer{
     double y = 150;
     double  z = 50;
     */boolean single = true;
-            GUI g = new GUI();
+         GUI g = new GUI();
        /* 
     Pane rootPane = new Pane();
         
@@ -160,7 +160,7 @@ public class TextVisualizer implements Observer{
         //pos beinhaltet Position in x, y und z und die Rotation um die Z-Achse
 	System.out.println("Drone bewegt sich auf " + pos[0] +", "+ pos[1] +", "+ pos[2]);
         System.out.println("Drohne ist um "+ pos[3] +" Grad rotiert");
-        g.zeichneDrone(pos[0],pos[1],pos[2]);
+       g.zeichneDrone(pos[0],pos[1],pos[2]);
         
        if(single){
             
@@ -168,7 +168,7 @@ public class TextVisualizer implements Observer{
 
 			@Override
 			public void run() {
-                            g.run();
+                           g.run();
                          
 			}
 		}).start(); 

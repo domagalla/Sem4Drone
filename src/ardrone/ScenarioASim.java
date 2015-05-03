@@ -27,18 +27,7 @@ public class ScenarioASim {
             myWorld.addObserver(new DroneActorPositionAdapter());
             myWorld.addObserver(new TextVisualizer());
            
-            //Thread für die GUI erstellen 
-            /*GUI g = new GUI();
-            new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-                            g.run();
-                         
-			}
-		}).start();            
-	*/
-          ///
 
             myWorld.createActor(); //Actor der Drohne auf Index 0
             myWorld.getActor(0).createAttribute("Name", "ARDrone");
@@ -66,7 +55,7 @@ public class ScenarioASim {
                         }
                     }
                 }
-            }, 500, 1000);
+            }, 500, 100);
        
             
             myWorld.createActor(); //Wand auf Y=0 auf Index 1

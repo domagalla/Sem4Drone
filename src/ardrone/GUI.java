@@ -5,152 +5,96 @@
  */
 package ardrone;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.LayoutManager;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ImageObserver;
+import java.awt.image.RenderedImage;
+import java.awt.image.renderable.RenderableImage;
+import java.text.AttributedCharacterIterator;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 /**
  *
- * @author domagalla
+ * @author Admin
  */
-import javafx.application.Application;
-import static javafx.application.Application.launch;
-import javafx.scene.Scene;
-import javafx.scene.layout.*;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.CircleBuilder;
-import javafx.scene.control.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+public class GUI extends JFrame implements Runnable {
 
+    double x;
+    double y;
+    double z;
+    double rot;
+    /**
+     * Creates new form NewJFrame1
+     */
+    public GUI() {
+  
+    }
 
+ public void createFrame(){
  
-public class GUI extends Application implements Runnable{
+     this.setTitle("ARDon Stats");
+     this.setSize(1024,768);
  
+            this.setVisible(true);
    
-        
-      Pane rootPane = new Pane();
-        
-        Pane topViewPane = new Pane();
-        Pane frontViewPane = new Pane();
-        Pane sideViewPane = new Pane();
-        GridPane statsPane = new GridPane();
-        GridPane infoPane = new GridPane();
-        GridPane gridpane = new GridPane();   
-        
-       
-        Label posXLabel = new Label("PosX:  "); 
-        Label posYLabel = new Label("PosY:  "); 
-        Label posZLabel = new Label("PosZ:  "); 
-        Label rotXLabel = new Label("RotX:  "); 
-        Label rotYLabel = new Label("RotY:  "); 
-        Label rotZLabel = new Label("RotZ:  "); 
-        
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("ARDrone Stats Control");
- 
-        Label topViewLabel = new Label("TopView");
-        Label sideViewLabel = new Label("SideView");
-        Label frontViewLabel = new Label("FrontView");
-        
-       
-       
-        
-        
-        topViewPane.setMinSize(500, 300);
-        topViewPane.setMaxSize(500, 300);
-        topViewPane.setStyle("-fx-background-color: blue;");
-        
-        topViewPane.getChildren().addAll(topViewLabel);
-        
-        sideViewPane.setMinSize(500, 300);
-        sideViewPane.setMaxSize(500, 300);
-        sideViewPane.setStyle("-fx-background-color: green;");
-        
-        sideViewPane.getChildren().addAll(sideViewLabel);
-        
-        frontViewPane.setMinSize(300, 300);
-        frontViewPane.setMaxSize(300, 300);
-        frontViewPane.setStyle("-fx-background-color: yellow;");
-        
-        
-        frontViewPane.getChildren().addAll(frontViewLabel);
-        
-        statsPane.setMinSize(300, 300);
-        statsPane.setMaxSize(300, 300);
-        
-        statsPane.setConstraints(posXLabel, 1,3);
-        statsPane.setConstraints(posYLabel, 1,4);
-        statsPane.setConstraints(posZLabel, 1,5);
-        statsPane.setConstraints(rotXLabel, 1,9);
-        statsPane.setConstraints(rotYLabel, 1,10);
-        statsPane.setConstraints(rotZLabel, 1,11);
-        
-        
-        statsPane.getChildren().addAll(posXLabel, posYLabel, posZLabel, rotXLabel, rotYLabel, rotZLabel);
-        
-        infoPane.setMinSize(400,300);
-        infoPane.setMaxSize(400,300);
-     
-        GridPane.setConstraints(topViewPane, 1, 1); // column=3 row=1
-        GridPane.setConstraints(sideViewPane, 2, 1);
-        GridPane.setConstraints(frontViewPane, 1, 2);
-        GridPane.setConstraints(statsPane, 2,2);
-        
-        gridpane.getChildren().addAll(topViewPane,sideViewPane,frontViewPane, statsPane);
- 
-
-        
-//        zeichneDrone(1,1,1);
-        rootPane.getChildren().add(gridpane);
-        
- 
-        primaryStage.setScene(new Scene(rootPane, 1000, 600));
-        //primaryStage.getStylesheets().add("style.css");
-        primaryStage.show();
-    }
-    public void zeichneDrone(double x, double y, double z){
-        Circle droneTop = CircleBuilder.create()
-            .radius(10)
-            .centerX(z)
-            .centerY(x)
-            .build();
-        droneTop.setFill(Color.RED);
-        topViewPane.getChildren().addAll(droneTop);
-        
-        Circle droneSide = CircleBuilder.create()
-            .radius(10)
-            .centerX(z)
-            .centerY(y)
-            .build();
-        droneSide.setFill(Color.RED);
-        sideViewPane.getChildren().addAll(droneSide);
-        
-        Circle droneFront = CircleBuilder.create()
-            .radius(10)
-            .centerX(x)
-            .centerY(y)
-            .build();
-        droneFront.setFill(Color.RED);
-        frontViewPane.getChildren().addAll(droneFront);
-        System.out.print(y);
-        /*rootPane.requestLayout();
-        gridpane.requestLayout();
-        frontViewPane.requestLayout();*/
-        
-    } 
-            
-    public void zeichneStats(double x, double y, double z){
-        
-        posXLabel.setText("PosX: "+ x);
-        System.out.print(y);
-        
-    }
-   /* public static void main(String[] args) {
-        launch(args);
-    }*/
-
+     }
+    
     @Override
     public void run() {
-        launch();
-   
+    
+         createFrame();
+            }
+    
+    @Override
+    public void paint(Graphics g){
+    g.clearRect(0, 0, getWidth(), getHeight());
+        g.fillOval((int)Math.round(x)+100,(int)Math.round(y)+100, 10, 10);
+        g.drawString("ARDrone", (int)Math.round(x)+115,(int)Math.round(y)+110);
+        g.setColor(Color.black);
+        g.drawString("X:        "+Double.toString(x)+"        Y:        "+Double.toString(y), 400, 400);
+        try {
+            this.wait(500);
+        } catch (InterruptedException ex) {
+            
+        }
+        
     }
 
+    void zeichneDrone(double po, double po0, double po1) {
+         x = po;
+         y = po0;
+         z = po1;
+           
+        repaint();
+     }
+        
 }
+
+
