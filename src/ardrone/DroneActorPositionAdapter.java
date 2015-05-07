@@ -5,8 +5,7 @@
  */
 package ardrone;
 
-import java.util.Observable;
-import java.util.Observer;
+
 
 /**
  *
@@ -14,8 +13,9 @@ import java.util.Observer;
  */
 public class DroneActorPositionAdapter implements Observer{
 
-    ScenarioADroneControl droneCtrl = new ScenarioADroneControl();
+    DronePosition droneCtrl = new ScenarioADroneControl();
     
+    /*
     @Override
     public void update(Observable o, Object arg) {
         //Falls die Drone übergeben wird, reiche sie weiter an ScenarioADroneControl
@@ -28,6 +28,14 @@ public class DroneActorPositionAdapter implements Observer{
             double[] dronePos = (double[]) arg;
             notifyDroneControl(dronePos[0], dronePos[1], dronePos[2], dronePos[3]);
         }
+    }
+    */
+    
+    @Override
+    public void update(double[] position, double[] rotation){
+        //benachrichtige die DroneControl über die aktuelle Positioin der Drohne
+        droneCtrl.setPosition(position[0], position[1], position[2]);
+        droneCtrl.setRotation(rotation[0], rotation[1], rotation[2]);
     }
     
     //Stecke die Position in ein Object Array und schick es an ScenarioADroneControl
