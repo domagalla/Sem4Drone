@@ -15,18 +15,18 @@ import java.util.Observable;
 public class World extends Observable implements WorldControl {
         
         //Liste mit Actors, wird in ScenarioASim gefüllt
-        ArrayList <Actor> actorList = new ArrayList<Actor>();
+        ArrayList <ARDroneActor> actorList = new ArrayList<ARDroneActor>();
 	
-	public Actor getActor(int index){
+	public ARDroneActor getActor(int index){
 		return actorList.get(index);
      
 	}
 	public void createActor(){
-		Actor a = new Actor();
+		ARDroneActor a = new ARDroneActor();
                 actorList.add(a);
 	}
         
-	public void removeActor(Actor a){
+	public void removeActor(ARDroneActor a){
 		if(actorList.remove(a)){
                     System.out.println("Actor wurde entfernt");
                 } else {
@@ -37,6 +37,7 @@ public class World extends Observable implements WorldControl {
 	public int getActorsCount(){
 		return actorList.size();
 	}
+        /*
         public void giveRoomBoundaries(){
             double[] bound = new double[]{
                 1337,
@@ -48,6 +49,7 @@ public class World extends Observable implements WorldControl {
             this.hasChanged();
             this.notifyObservers(bound);
         }
+        */
         
         //Nur einmal aufgerufen um eine Referenz auf das droneActor Objekt zum Model zu bekommen
         public void giveDroneObject(){
