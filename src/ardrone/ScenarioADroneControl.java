@@ -48,7 +48,7 @@ public class ScenarioADroneControl implements DronePosition{
             model.stop();
         } else {
         //Sonst fliege das Scenario weiter
-        model.move(10, 0, 0); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
+        model.speed(10); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
         model.rotate(0, 0, 5);
         
         }
@@ -67,10 +67,10 @@ public class ScenarioADroneControl implements DronePosition{
             model.stop();
         }
         if(firstLoop){
-            model.move(10, 0, 0);
+            model.speed(10);
             model.rotate(0, 0, 5);
         } else {
-            model.move(10, 0, 0);
+            model.speed(10);
             model.rotate(0, 0, -5);
         }
         
