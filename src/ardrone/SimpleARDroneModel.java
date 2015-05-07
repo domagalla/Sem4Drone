@@ -9,26 +9,28 @@ package ardrone;
  *
  * @author Oliver Kaup
  */
-public class SimpleARDroneModel extends World implements DroneControl {
+public class SimpleARDroneModel implements DroneControl {
     
     boolean started = false;
-    Actor droneActor;
+    ARDroneActor droneActor;
     
-    public void move(double x, double y, double z){
+    public void speed(double speed){
+       double[] position = droneActor.getPosition();
+       double[] rotation = droneActor.getRotation();
        //Position der Drohne wird in Abhängigkeit von der aktuellen Rotation der Drohne verändert
-        droneActor.setPos(droneActor.getPosX()+x*Math.cos(Math.toRadians(droneActor.getRotZ())),
-                          droneActor.getPosY()+x*Math.sin(Math.toRadians(droneActor.getRotZ())),
-                          droneActor.getPosZ()+z);
+        droneActor.setPosition(position[0]+speed*Math.cos(Math.toRadians(rotation[2])),
+                          position[1]+speed*Math.sin(Math.toRadians(rotation[2])),
+                          position[2]);
        // System.out.println("Drohne hat sich bewegt!");
        //  System.out.println(droneActor.getPosX() +" "+ droneActor.getPosY());
     }
     public void rotate(double x, double y, double z){
         //Die Drohne rotiert ohne ihre Position zu verändern
         //Die Drohne rotiert gegen den Uhrzeigersinn (negative Rotation = im Uhrzeigersinn)
-         droneActor.setRot(0, 0, droneActor.getRotZ()+z);
+         droneActor.setRotation(0, 0, droneActor.getRotation()[2]+z);
     }
     public void stop(){
-        droneActor.setPos(droneActor.getPosX(), droneActor.getPosX(), 0);
+        droneActor.setPosition(droneActor.getPosition()[0], droneActor.getPosition()[1], 0);
         System.out.println("Drohne ist gelandet");
         
         droneActor.setAttribute("Finnished", true);
@@ -40,13 +42,13 @@ public class SimpleARDroneModel extends World implements DroneControl {
     public void start(){
         //System.out.println("Drohne wurde gestartet!");
         started = true;
-        droneActor.setPos(250, 50, 100);
+        droneActor.setPosition(250, 50, 100);
         
     }
     public void interpretCommand(String cmd, Object[] parameters){
         //Wenn das Drohnen Objekt übergeben wurde speicher es dir unter droneActor
         if(cmd.equals("droneActor")){
-            droneActor = (Actor)parameters[0];
+            droneActor = (ARDroneActor)parameters[0];
         }
     }
     
