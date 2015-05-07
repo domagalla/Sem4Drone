@@ -13,7 +13,7 @@ public interface WorldControl {
     
     public Actor getActor(int index);
     public void createActor();
-    public void removeActor(Actor a);
+    public void removeActor(ARDroneActor a);
     public int getActorsCount();
         
 }
