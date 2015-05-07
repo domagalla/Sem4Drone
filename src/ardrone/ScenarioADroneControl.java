@@ -22,12 +22,12 @@ public class ScenarioADroneControl implements DronePosition{
     
     @Override
     public void setPosition(double x, double y, double z) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void setRotation(double x, double y, double z) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
     public void sendCommand(String cmd, Object[] parameters){
