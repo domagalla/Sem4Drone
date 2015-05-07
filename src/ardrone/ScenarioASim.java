@@ -32,8 +32,8 @@ public class ScenarioASim {
             myWorld.createActor(); //Actor der Drohne auf Index 0
             myWorld.getActor(0).createAttribute("Name", "ARDrone");
             myWorld.getActor(0).createAttribute("Finnished", false); //Wird true wenn Scenario beendet
-            myWorld.getActor(0).setPos(0, 0, 0);
-            double[] dronePos = new double[4];
+            myWorld.getActor(0).setPosition(0, 0, 0);
+            double[] dronePos = new double[5];
             myWorld.giveDroneObject(); //Actor der Drohne an SimpleARDroneModel übergeben
 
             
@@ -43,11 +43,14 @@ public class ScenarioASim {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    double[] position = myWorld.getActor(0).getPosition();
+                    double[] rotation = myWorld.getActor(0).getRotation();
 
-                    dronePos[0] = myWorld.getActor(0).getPosX();
-                    dronePos[1] = myWorld.getActor(0).getPosY();
-                    dronePos[2] = myWorld.getActor(0).getPosZ();
-                    dronePos[3] = myWorld.getActor(0).getRotZ();
+                    dronePos[0] = position[0];
+                    dronePos[1] = position[1];
+                    dronePos[2] = position[2];
+                    dronePos[3] = rotation[1];
+                    dronePos[4] = rotation[2];
                     myWorld.aktualisiere(dronePos);
                     
                     if((boolean)myWorld.getActor(0).getAttribute("Finnished")){
@@ -58,7 +61,7 @@ public class ScenarioASim {
                 }
             }, 500, 100);
        
-            
+            /*
             myWorld.createActor(); //Wand auf Y=0 auf Index 1
             myWorld.getActor(1).createAttribute("Name", "WallAtBot");
             
@@ -78,6 +81,7 @@ public class ScenarioASim {
             myWorld.getActor(2).setPos(0, 0, 300);
             
             myWorld.giveRoomBoundaries(); //Raumbegrenzung an die GUI übergeben
+            */
             
             
         }
