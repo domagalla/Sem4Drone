@@ -20,6 +20,16 @@ public class ScenarioADroneControl implements DronePosition{
     double rotZ;
     
     
+    @Override
+    public void setPosition(double x, double y, double z) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setRotation(double x, double y, double z) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     public void sendCommand(String cmd, Object[] parameters){
         //Wenn dir die Drohnen Position übergeben wird, lege sie auf deine eigenen Variablen und fliege das Scenario weiter
         if(cmd.equals("UpdatePos")){
@@ -75,4 +85,5 @@ public class ScenarioADroneControl implements DronePosition{
         }
         
     }
+
 }
