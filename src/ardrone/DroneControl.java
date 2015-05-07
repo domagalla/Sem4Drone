@@ -11,7 +11,7 @@ package ardrone;
  */
 public interface DroneControl {
     
-    public void move(double x, double y, double z);
+    public void speed(double speed);
     public void rotate(double x, double y, double z);
     public void stop();
     public void start();
