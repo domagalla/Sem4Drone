@@ -24,8 +24,8 @@ public class ScenarioASim {
         public void start(){
             //Erstelle Welt und füge Observer hinzu
             World myWorld = new World();
-            myWorld.addObserver(new DroneActorPositionAdapter());
-            myWorld.addObserver(new TextVisualizer());
+            myWorld.register(new DroneActorPositionAdapter());
+            myWorld.register(new TextVisualizer());
            
 
 
