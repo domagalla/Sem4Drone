@@ -6,7 +6,6 @@
 package ardrone;
 
 import java.util.Observable;
-import java.util.Observer;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.scene.Scene;
@@ -146,23 +145,17 @@ public class TextVisualizer implements Observer{
 
     
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(double[] position, double[] rotation) {
        
-        //nur ausführen wenn nicht nur die Drohne für das Model übergeben wird
-        if(!arg.getClass().getName().equals("ardrone.Actor")){
-            double[] dArray = (double[])arg;
-            if(dArray[0] == 1337){ //Zur Identifikation der Raumbegrenzungs-Übergabe, ist der Wert auf Index 0 immer 1337
-                
-            } else {
-                visualize((double[])arg);
-            }
-        }
+
+                visualize(position, rotation);
+
     }
     
-    public void visualize(double[] pos){
+    public void visualize(double[] pos, double[] rot){
         //pos beinhaltet Position in x, y und z und die Rotation um die Z-Achse
 	System.out.println("Drone bewegt sich auf " + pos[0] +", "+ pos[1] +", "+ pos[2]);
-        System.out.println("Drohne ist um "+ pos[3] +" Grad rotiert");
+        System.out.println("Drohne ist um "+ rot[2] +" Grad rotiert");
        g.zeichneDrone(pos[0],pos[1],pos[2]);
         
        if(single){
