@@ -12,12 +12,13 @@ import java.util.Observable;
  *
  * @author Oliver Kaup, Izabela Wojcicki, Marvin Voß, Niklas Domagalla
  */
-public class World extends Observable implements WorldControl {
+public class World extends Observable implements WorldControl, WorldEvents{
         
         //Liste mit Actors, wird in ScenarioASim gefüllt
-        ArrayList <ARDroneActor> actorList = new ArrayList<ARDroneActor>();
+        ArrayList <Actor> actorList = new ArrayList<Actor>();
+        ArrayList <Observer> observers = new ArrayList<Observer>();
 	
-	public ARDroneActor getActor(int index){
+	public Actor getActor(int index){
 		return actorList.get(index);
      
 	}
@@ -62,6 +63,22 @@ public class World extends Observable implements WorldControl {
             this.setChanged();
             this.notifyObservers(arg);
         }
-        
+
+    @Override
+    public void register(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void unregister(Observer o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyObserver() {
+        for (Observer observer : observers) {
+            observer.update(getActor(0).getPosition(), getActor(0).getRotation());
+        }
+    }
 
 }
