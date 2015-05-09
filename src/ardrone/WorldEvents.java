@@ -5,7 +5,6 @@
  */
 package ardrone;
 
-import java.util.Observer;
 
 /**
  *
