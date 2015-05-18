@@ -15,11 +15,12 @@ import java.util.TimerTask;
  * @author Oliver Kaup
  */
 public class ScenarioASim {
-        
+    
         public static void main(String[] arg){
             ScenarioASim mySim = new ScenarioASim();
             mySim.start();
         }
+        
         
         public void start(){
             //Erstelle Welt und füge Observer hinzu
@@ -35,7 +36,6 @@ public class ScenarioASim {
             myWorld.getActor(0).setPosition(0, 0, 0);
             double[] dronePos = new double[5];
             myWorld.giveDroneObject(); //Actor der Drohne an SimpleARDroneModel übergeben
-
             
             //Timer um die DrohnenPosition regelmäßig anzeigen zu lassen
             Timer timer = new Timer();

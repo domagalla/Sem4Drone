@@ -14,6 +14,8 @@ import java.util.Observable;
  */
 public class World extends Observable implements WorldControl, WorldEvents{
         
+        private static ARDroneActor drone;
+    
         //Liste mit Actors, wird in ScenarioASim gefüllt
         ArrayList <Actor> actorList = new ArrayList<Actor>();
         ArrayList <Observer> observers = new ArrayList<Observer>();
@@ -22,6 +24,16 @@ public class World extends Observable implements WorldControl, WorldEvents{
 		return actorList.get(index);
      
 	}
+        
+        public static ARDroneActor getDrone(){
+            if(drone!=null){
+                return drone;
+            } else {
+                System.out.println("Drohne wurde noch nicht erstellt!");
+                return drone;
+            }
+        }
+        
 	public void createActor(){
 		ARDroneActor a = new ARDroneActor();
                 actorList.add(a);
@@ -54,8 +66,7 @@ public class World extends Observable implements WorldControl, WorldEvents{
         
         //Nur einmal aufgerufen um eine Referenz auf das droneActor Objekt zum Model zu bekommen
         public void giveDroneObject(){
-            this.setChanged();
-            this.notifyObservers(actorList.get(0));
+            drone = (ARDroneActor)getActor(0);
         }
         
         //stetig aufgerufen um die aktuelle Position der Drone an die Observer zu geben

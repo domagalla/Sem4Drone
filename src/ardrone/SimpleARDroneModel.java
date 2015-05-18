@@ -34,10 +34,6 @@ public class SimpleARDroneModel implements DroneControl {
         System.out.println("Drohne ist gelandet");
         
         droneActor.setAttribute("Finnished", true);
-       
-        //started = false; //würde Endlosschleife verursachen?
-        
-        
     }
     public void start(){
         //System.out.println("Drohne wurde gestartet!");
