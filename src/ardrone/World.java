@@ -12,7 +12,7 @@ import java.util.Observable;
  *
  * @author Oliver Kaup, Izabela Wojcicki, Marvin Voß, Niklas Domagalla
  */
-public class World extends Observable implements WorldControl, WorldEvents{
+public class World implements WorldControl, WorldEvents{
         
         private static ARDroneActor drone;
     
@@ -67,12 +67,13 @@ public class World extends Observable implements WorldControl, WorldEvents{
         //Nur einmal aufgerufen um eine Referenz auf das droneActor Objekt zum Model zu bekommen
         public void giveDroneObject(){
             drone = (ARDroneActor)getActor(0);
+            System.out.println(drone);
         }
         
         //stetig aufgerufen um die aktuelle Position der Drone an die Observer zu geben
-        public void aktualisiere(Object arg){
-            this.setChanged();
-            this.notifyObservers(arg);
+        public void aktualisiere(){
+            this.notifyObserver();
+            //System.out.println("aktualisiere");
         }
 
     @Override
@@ -89,6 +90,7 @@ public class World extends Observable implements WorldControl, WorldEvents{
     public void notifyObserver() {
         for (Observer observer : observers) {
             observer.update(getActor(0).getPosition(), getActor(0).getRotation());
+            System.out.println("notifying");
         }
     }
 

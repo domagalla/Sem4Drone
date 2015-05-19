@@ -34,6 +34,7 @@ public class DroneActorPositionAdapter implements Observer{
     @Override
     public void update(double[] position, double[] rotation){
         //benachrichtige die DroneControl über die aktuelle Positioin der Drohne
+        System.out.println("position adapter");
         droneCtrl.setPosition(position[0], position[1], position[2]);
         droneCtrl.setRotation(rotation[0], rotation[1], rotation[2]);
     }

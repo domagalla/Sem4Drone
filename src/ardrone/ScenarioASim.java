@@ -43,6 +43,7 @@ public class ScenarioASim {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    /*
                     double[] position = myWorld.getActor(0).getPosition();
                     double[] rotation = myWorld.getActor(0).getRotation();
 
@@ -51,7 +52,8 @@ public class ScenarioASim {
                     dronePos[2] = position[2];
                     dronePos[3] = rotation[1];
                     dronePos[4] = rotation[2];
-                    myWorld.aktualisiere(dronePos);
+                    */
+                    myWorld.aktualisiere();
                     
                     if((boolean)myWorld.getActor(0).getAttribute("Finnished")){
                         if(this.cancel()){

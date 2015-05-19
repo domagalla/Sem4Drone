@@ -37,6 +37,7 @@ public class SimpleARDroneModel implements DroneControl {
     }
     public void start(){
         //System.out.println("Drohne wurde gestartet!");
+        System.out.println(World.getDrone());
         started = true;
         droneActor.setPosition(250, 50, 100);
         
