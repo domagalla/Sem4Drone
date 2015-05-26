@@ -34,7 +34,6 @@ public class ScenarioASim {
             myWorld.getActor(0).createAttribute("Name", "ARDrone");
             myWorld.getActor(0).createAttribute("Finnished", false); //Wird true wenn Scenario beendet
             myWorld.getActor(0).setPosition(0, 0, 0);
-            double[] dronePos = new double[5];
             myWorld.giveDroneObject(); //Actor der Drohne an SimpleARDroneModel übergeben
             
             //Timer um die DrohnenPosition regelmäßig anzeigen zu lassen
@@ -43,16 +42,7 @@ public class ScenarioASim {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    /*
-                    double[] position = myWorld.getActor(0).getPosition();
-                    double[] rotation = myWorld.getActor(0).getRotation();
-
-                    dronePos[0] = position[0];
-                    dronePos[1] = position[1];
-                    dronePos[2] = position[2];
-                    dronePos[3] = rotation[1];
-                    dronePos[4] = rotation[2];
-                    */
+                    
                     myWorld.aktualisiere();
                     
                     if((boolean)myWorld.getActor(0).getAttribute("Finnished")){
@@ -64,6 +54,7 @@ public class ScenarioASim {
             }, 500, 100);
        
             /*
+            //Raumbegrenzungen
             myWorld.createActor(); //Wand auf Y=0 auf Index 1
             myWorld.getActor(1).createAttribute("Name", "WallAtBot");
             

@@ -12,8 +12,9 @@ package ardrone;
  * @author Oliver Kaup
  */
 public class DroneActorPositionAdapter implements Observer{
-
-    DronePosition droneCtrl = new ScenarioADroneControl();
+    
+    boolean started = false;
+    ScenarioADroneControl droneCtrl = new ScenarioADroneControl();
     
     /*
     @Override
@@ -33,20 +34,13 @@ public class DroneActorPositionAdapter implements Observer{
     
     @Override
     public void update(double[] position, double[] rotation){
+        if(!started){
+            droneCtrl.fly8Scenario();
+            started = true;
+        }
         //benachrichtige die DroneControl über die aktuelle Positioin der Drohne
-        System.out.println("position adapter");
         droneCtrl.setPosition(position[0], position[1], position[2]);
         droneCtrl.setRotation(rotation[0], rotation[1], rotation[2]);
-    }
-    
-    //Stecke die Position in ein Object Array und schick es an ScenarioADroneControl
-    public void notifyDroneControl(double x, double y, double z, double rotZ){
-        Object[] pos = new Object[4];
-        pos[0] = x;
-        pos[1] = y;
-        pos[2] = z;
-        pos[3] = rotZ;
-        droneCtrl.sendCommand("UpdatePos", pos);
     }
     
     

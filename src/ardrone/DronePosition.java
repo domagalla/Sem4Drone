@@ -13,7 +13,5 @@ public interface DronePosition {
     
     public void setPosition(double x, double y, double z);
     public void setRotation(double x, double y, double z);
-    public void sendCommand(String cmd, Object[] parameters);
-    public void flyScenario();
     
 }

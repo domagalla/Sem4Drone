@@ -20,6 +20,7 @@ public class World implements WorldControl, WorldEvents{
         ArrayList <Actor> actorList = new ArrayList<Actor>();
         ArrayList <Observer> observers = new ArrayList<Observer>();
 	
+        @Override
 	public Actor getActor(int index){
 		return actorList.get(index);
      
@@ -73,7 +74,6 @@ public class World implements WorldControl, WorldEvents{
         //stetig aufgerufen um die aktuelle Position der Drone an die Observer zu geben
         public void aktualisiere(){
             this.notifyObserver();
-            //System.out.println("aktualisiere");
         }
 
     @Override
@@ -90,7 +90,6 @@ public class World implements WorldControl, WorldEvents{
     public void notifyObserver() {
         for (Observer observer : observers) {
             observer.update(getActor(0).getPosition(), getActor(0).getRotation());
-            System.out.println("notifying");
         }
     }
 

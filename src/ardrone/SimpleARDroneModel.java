@@ -24,7 +24,7 @@ public class SimpleARDroneModel implements DroneControl {
        // System.out.println("Drohne hat sich bewegt!");
        //  System.out.println(droneActor.getPosX() +" "+ droneActor.getPosY());
     }
-    public void rotate(double x, double y, double z){
+    public void rotation(double x, double y, double z){
         //Die Drohne rotiert ohne ihre Position zu verändern
         //Die Drohne rotiert gegen den Uhrzeigersinn (negative Rotation = im Uhrzeigersinn)
          droneActor.setRotation(0, 0, droneActor.getRotation()[2]+z);
@@ -41,12 +41,6 @@ public class SimpleARDroneModel implements DroneControl {
         started = true;
         droneActor.setPosition(250, 50, 100);
         
-    }
-    public void interpretCommand(String cmd, Object[] parameters){
-        //Wenn das Drohnen Objekt übergeben wurde speicher es dir unter droneActor
-        if(cmd.equals("droneActor")){
-            droneActor = (ARDroneActor)parameters[0];
-        }
     }
     
     public boolean getStarted(){
