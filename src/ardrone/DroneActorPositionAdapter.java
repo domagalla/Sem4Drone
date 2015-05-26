@@ -35,7 +35,8 @@ public class DroneActorPositionAdapter implements Observer{
     @Override
     public void update(double[] position, double[] rotation){
         if(!started){
-            droneCtrl.fly8Scenario();
+            System.out.println("Starte Scenario");
+            droneCtrl.flyScenario();
             started = true;
         }
         //benachrichtige die DroneControl über die aktuelle Positioin der Drohne

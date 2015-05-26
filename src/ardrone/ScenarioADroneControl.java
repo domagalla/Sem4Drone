@@ -5,6 +5,9 @@
  */
 package ardrone;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  *
  * @author Izabela Wojcicki
@@ -42,18 +45,27 @@ public class ScenarioADroneControl implements DronePosition{
         new Thread(new Runnable(){
             @Override
             public void run() {
-                //Wenn die Drohne nicht gestartet ist, dann starte
-                if(!model.getStarted()){
-                    model.start();
-                }
-                //Wenn die Drohne das Ziel(Einen Kreis fliegen) erreicht hat, dann stoppe die Drohne
-                if(rotZ==360){
-                    model.stop();
-                } else {
-                    //Sonst fliege das Scenario weiter
-                    model.speed(10); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
-                    model.rotation(0, 0, 5);
-                }
+                Timer timer = new Timer();
+                // Start in einer halben Sekunde dann Ablauf jede Sekunde
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                    
+                        //Wenn die Drohne nicht gestartet ist, dann starte
+                        if(!model.getStarted()){
+                            model.start();
+                        }
+                        //Wenn die Drohne das Ziel(Einen Kreis fliegen) erreicht hat, dann stoppe die Drohne
+                        if(rotZ==360){
+                            model.stop();
+                        } else {
+                            //Sonst fliege das Scenario weiter
+                            model.speed(10); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
+                            model.rotation(0, 0, 5);
+                            System.out.println("bewege");
+                        }
+                    }
+                }, 500, 100);
             }
         });
         
@@ -63,6 +75,12 @@ public class ScenarioADroneControl implements DronePosition{
         new Thread(new Runnable(){
             @Override
             public void run() {
+                Timer timer = new Timer();
+                // Start in einer halben Sekunde dann Ablauf jede Sekunde
+                timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    
                 if(!model.getStarted()){
                     model.start();
                     model.rotation(0, 0, 90);
@@ -80,6 +98,8 @@ public class ScenarioADroneControl implements DronePosition{
                     model.speed(10);
                     model.rotation(0, 0, -5);
                 }
+                }
+            }, 500, 100);
             }
         });
     }
