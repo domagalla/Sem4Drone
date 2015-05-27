@@ -7,12 +7,14 @@ package ardrone;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Izabela Wojcicki
  */
-public class ScenarioADroneControl implements DronePosition{
+public class ScenarioADroneControl implements DronePosition, Runnable{
     
     SimpleARDroneModel model = new SimpleARDroneModel();
     
@@ -28,6 +30,7 @@ public class ScenarioADroneControl implements DronePosition{
     
     @Override
     public void setPosition(double x, double y, double z) {
+        model.tickPerSecond();
         posX = x;
         posY = y;
         posZ = z;
@@ -50,7 +53,8 @@ public class ScenarioADroneControl implements DronePosition{
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                    
+                        
+                        System.out.println("scenario wird geflogen");
                         //Wenn die Drohne nicht gestartet ist, dann starte
                         if(!model.getStarted()){
                             model.start();
@@ -102,6 +106,33 @@ public class ScenarioADroneControl implements DronePosition{
             }, 500, 100);
             }
         });
+    }
+
+    @Override
+    public void run() {
+        Timer timer = new Timer();
+        // Start in einer halben Sekunde dann Ablauf jede Sekunde
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                  
+                //System.out.println("scenario wird geflogen");
+                //Wenn die Drohne nicht gestartet ist, dann starte
+                //System.out.println("Control Ticker läuft im: "+Thread.currentThread());
+                if(!model.getStarted()){
+                    model.start();
+                }
+                //Wenn die Drohne das Ziel(Einen Kreis fliegen) erreicht hat, dann stoppe die Drohne
+                if(rotZ==360){
+                    model.stop();
+                } else {
+                    //Sonst fliege das Scenario weiter
+                    model.speed(10); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
+                    model.rotation(0, 0, 5);
+                    //System.out.println("bewege");
+                }
+            }
+        }, 500, 100);
     }
 
 }

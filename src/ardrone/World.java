@@ -19,7 +19,7 @@ public class World implements WorldControl, WorldEvents{
         //Liste mit Actors, wird in ScenarioASim gefüllt
         ArrayList <Actor> actorList = new ArrayList<Actor>();
         ArrayList <Observer> observers = new ArrayList<Observer>();
-	
+
         @Override
 	public Actor getActor(int index){
 		return actorList.get(index);

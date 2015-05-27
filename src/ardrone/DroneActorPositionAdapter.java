@@ -36,7 +36,9 @@ public class DroneActorPositionAdapter implements Observer{
     public void update(double[] position, double[] rotation){
         if(!started){
             System.out.println("Starte Scenario");
-            droneCtrl.flyScenario();
+            Runnable r = new ScenarioADroneControl();
+            Thread t = new Thread(r);
+            t.start();
             started = true;
         }
         //benachrichtige die DroneControl über die aktuelle Positioin der Drohne

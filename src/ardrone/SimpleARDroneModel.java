@@ -11,23 +11,57 @@ package ardrone;
  */
 public class SimpleARDroneModel implements DroneControl {
     
-    boolean started = false;
+    static boolean started = false;
+    static boolean startComplete = false;
     ARDroneActor droneActor;
     
+    static double aktSpeed;
+    static double desSpeed;
+    static double aktAccel = 0;
+    static double startHeight;
+    static double[] position;
+    static double[] rotation;
+    
+    public void tickPerSecond(){
+        System.out.println("tickperSecond "+ started + " " + startComplete);
+        if(droneActor==null){
+            droneActor = World.getDrone();
+        }
+        position = droneActor.getPosition();
+        rotation = droneActor.getRotation();
+        if(started && !startComplete){
+            System.out.println("Pos2 "+ position[2]+ "startHeight " + startHeight);
+            if(position[2]<startHeight){
+                rotation(0,90,0);
+                aktAccel = aktAccel+1;
+                aktSpeed = aktSpeed+aktAccel;
+                droneActor.setPosition(position[0]+aktSpeed*Math.cos(Math.toRadians(rotation[2]))+aktSpeed*Math.cos(Math.toRadians(rotation[1])),
+                          position[1]+aktSpeed*Math.sin(Math.toRadians(rotation[2])),
+                          position[2]+aktSpeed*Math.sin(Math.toRadians(rotation[1])));
+                System.out.println("Z-Position: " +position[2]);
+            }
+        } else if (started&&startComplete){
+            
+        }
+    }
+    
     public void speed(double speed){
-       double[] position = droneActor.getPosition();
-       double[] rotation = droneActor.getRotation();
-       //Position der Drohne wird in Abhängigkeit von der aktuellen Rotation der Drohne verändert
+        desSpeed = speed;
+        position = droneActor.getPosition();
+        rotation = droneActor.getRotation();
+        //Position der Drohne wird in Abhängigkeit von der aktuellen Rotation der Drohne verändert
+        /*
         droneActor.setPosition(position[0]+speed*Math.cos(Math.toRadians(rotation[2])),
                           position[1]+speed*Math.sin(Math.toRadians(rotation[2])),
                           position[2]);
+                */
        // System.out.println("Drohne hat sich bewegt!");
        //  System.out.println(droneActor.getPosX() +" "+ droneActor.getPosY());
     }
     public void rotation(double x, double y, double z){
         //Die Drohne rotiert ohne ihre Position zu verändern
         //Die Drohne rotiert gegen den Uhrzeigersinn (negative Rotation = im Uhrzeigersinn)
-         droneActor.setRotation(0, 0, droneActor.getRotation()[2]+z);
+         droneActor.setRotation(x, y, z);
     }
     public void stop(){
         droneActor.setPosition(droneActor.getPosition()[0], droneActor.getPosition()[1], 0);
@@ -36,11 +70,11 @@ public class SimpleARDroneModel implements DroneControl {
         droneActor.setAttribute("Finnished", true);
     }
     public void start(){
-        //System.out.println("Drohne wurde gestartet!");
-        System.out.println(World.getDrone());
+        System.out.println("Drohne wurde gestartet!");
+        droneActor = World.getDrone();
         started = true;
-        droneActor.setPosition(250, 50, 100);
-        
+        startHeight = 100;
+        droneActor.setPosition(250, 50, 0);
     }
     
     public boolean getStarted(){

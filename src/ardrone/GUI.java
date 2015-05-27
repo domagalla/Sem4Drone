@@ -38,11 +38,13 @@ public class GUI extends JFrame implements Runnable {
     
     @Override
     public void run() {
+        
          createFrame();
             }
     
     @Override
     public void paint(Graphics g){
+        //System.out.println("GUI Ticker läuft im: "+Thread.currentThread());
         g.clearRect(0, 0, getWidth(), getHeight());//clearRect legt ein Rechteck über das Frame um vorhandene Elemente zu "entfernen"
         g.fillOval((int)Math.round(x)+100,(int)Math.round(y)+100, 10, 10); //Oval DronenPosition
         g.drawString("ARDrone", (int)Math.round(x)+115,(int)Math.round(y)+110); // String für DronenPunkt

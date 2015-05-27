@@ -7,6 +7,8 @@ package ardrone;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
@@ -42,7 +44,8 @@ public class ScenarioASim {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    
+                 
+                  
                     myWorld.aktualisiere();
                     
                     if((boolean)myWorld.getActor(0).getAttribute("Finnished")){
@@ -51,7 +54,7 @@ public class ScenarioASim {
                         }
                     }
                 }
-            }, 500, 100);
+            }, 1, 1000);
        
             /*
             //Raumbegrenzungen
