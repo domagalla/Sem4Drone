@@ -35,7 +35,7 @@ public class SimpleARDroneModel implements DroneControl {
                 rotation(0,90,0);
                 aktAccel = aktAccel+1;
                 aktSpeed = aktSpeed+aktAccel;
-                droneActor.setPosition(position[0]+aktSpeed*Math.cos(Math.toRadians(rotation[2]))+aktSpeed*Math.cos(Math.toRadians(rotation[1])),
+                droneActor.setPosition(position[0]+aktSpeed*Math.cos(Math.toRadians(rotation[2]))-aktSpeed*Math.sin(Math.toRadians(rotation[1])),
                           position[1]+aktSpeed*Math.sin(Math.toRadians(rotation[2])),
                           position[2]+aktSpeed*Math.sin(Math.toRadians(rotation[1])));
                 System.out.println("Z-Position: " +position[2]);
