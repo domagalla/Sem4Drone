@@ -132,7 +132,7 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
                     //System.out.println("bewege");
                 }
             }
-        }, 500, 100);
+        }, 1, 1000);
     }
 
 }

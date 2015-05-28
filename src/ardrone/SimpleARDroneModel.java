@@ -17,28 +17,35 @@ public class SimpleARDroneModel implements DroneControl {
     
     static double aktSpeed;
     static double desSpeed;
-    static double aktAccel = 0;
+    static double aktAccel;
+    static double desAccel;
     static double startHeight;
     static double[] position;
     static double[] rotation;
     
     public void tickPerSecond(){
+        
         System.out.println("tickperSecond "+ started + " " + startComplete);
         if(droneActor==null){
             droneActor = World.getDrone();
         }
         position = droneActor.getPosition();
         rotation = droneActor.getRotation();
+        aktAccel = (double)droneActor.getAttribute("Accel");
+        
         if(started && !startComplete){
             System.out.println("Pos2 "+ position[2]+ "startHeight " + startHeight);
             if(position[2]<startHeight){
                 rotation(0,90,0);
-                aktAccel = aktAccel+1;
+                aktAccel = aktAccel+980+5;
+                droneActor.setAttribute("Accel", aktAccel);
                 aktSpeed = aktSpeed+aktAccel;
+                droneActor.setAttribute("Speed", aktSpeed);
                 droneActor.setPosition(position[0]+aktSpeed*Math.cos(Math.toRadians(rotation[2]))-aktSpeed*Math.sin(Math.toRadians(rotation[1])),
                           position[1]+aktSpeed*Math.sin(Math.toRadians(rotation[2])),
                           position[2]+aktSpeed*Math.sin(Math.toRadians(rotation[1])));
                 System.out.println("Z-Position: " +position[2]);
+            
             }
         } else if (started&&startComplete){
             
