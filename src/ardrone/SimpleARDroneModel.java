@@ -20,6 +20,7 @@ public class SimpleARDroneModel implements DroneControl {
     static double aktAccel;
     static double desAccel;
     static double startHeight;
+    static double[] richtungsVec = new double[3];
     static double[] position;
     static double[] rotation;
     
@@ -41,9 +42,14 @@ public class SimpleARDroneModel implements DroneControl {
                 droneActor.setAttribute("Accel", aktAccel);
                 aktSpeed = aktSpeed+aktAccel;
                 droneActor.setAttribute("Speed", aktSpeed);
-                droneActor.setPosition(position[0]+aktSpeed*Math.cos(Math.toRadians(rotation[2]))-aktSpeed*Math.sin(Math.toRadians(rotation[1])),
-                          position[1]+aktSpeed*Math.sin(Math.toRadians(rotation[2])),
-                          position[2]+aktSpeed*Math.sin(Math.toRadians(rotation[1])));
+                
+                richtungsVec[0]=Math.cos(Math.toRadians(rotation[2]))-aktSpeed*Math.sin(Math.toRadians(rotation[1]));
+                richtungsVec[1]=Math.sin(Math.toRadians(rotation[2]));
+                richtungsVec[2]=Math.sin(Math.toRadians(rotation[1]));
+                
+                droneActor.setPosition(position[0]+aktSpeed*richtungsVec[0],
+                          position[1]+aktSpeed*richtungsVec[1],
+                          position[2]+aktSpeed*richtungsVec[2]);
                 System.out.println("Z-Position: " +position[2]);
             
             }
@@ -88,5 +94,23 @@ public class SimpleARDroneModel implements DroneControl {
         return started;
     }
     
+    private double skalarProdukt(double[] vec1, double[] vec2){
+        double ergebnis = vec1[0]*vec2[0]+vec1[1]*vec2[1]+vec1[2]*vec2[2];
+        return ergebnis;
+    }
+    
+    private double betrag(double[] vec1, double[] vec2){
+        double ergebnis = Math.sqrt(vec1[0]+vec1[1]+vec1[2])*Math.sqrt(vec2[0]+vec2[1]+vec2[2]);
+        return ergebnis;
+    }
+    
+    private double[] vereinheitliche(double[] vec){
+        double[] newVec = new double[3];
+        double length = Math.sqrt(vec[0]+vec[1]+vec[2]);
+        newVec[0]=vec[0]/length;
+        newVec[1]=vec[1]/length;
+        newVec[2]=vec[2]/length;
+        return newVec;
+    }
             
 }
