@@ -49,8 +49,8 @@ public class ScenarioASim {
                  
                     
                     myWorld.aktualisiere();
-                    engine.simulate();
-                    engine.collision();
+                    //engine.simulate();
+                    //engine.collision();
                     
                     if((boolean)myWorld.getActor(0).getAttribute("Finnished")){
                         if(this.cancel()){
@@ -58,7 +58,7 @@ public class ScenarioASim {
                         }
                     }
                 }
-            }, 1, 1000);
+            }, 1, 100);
        
             /*
             //Raumbegrenzungen

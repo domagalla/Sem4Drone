@@ -5,6 +5,7 @@
  */
 package ardrone;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -19,6 +20,11 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
     SimpleARDroneModel model = new SimpleARDroneModel();
     
     boolean firstLoop = true;
+    boolean refPointReached = false;
+    
+    ArrayList<Double> refX = new ArrayList();
+    ArrayList<Double> refY = new ArrayList();
+    ArrayList<Double> refZ = new ArrayList();
     
     double posX;
     double posY;
@@ -27,6 +33,25 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
     double rotY;
     double rotZ;
     
+    public ScenarioADroneControl(){
+        //REFERENZPUNKTE SETZEN
+        refX.add(100.0);
+        refY.add(100.0);
+        refZ.add(100.0);
+        
+        refX.add(300.0);
+        refY.add(100.0);
+        refZ.add(150.0);
+        
+        refX.add(350.0);
+        refY.add(200.0);
+        refZ.add(150.0);
+        
+        refX.add(250.0);
+        refY.add(300.0);
+        refZ.add(100.0);
+         
+    }
     
     @Override
     public void setPosition(double x, double y, double z) {
@@ -43,70 +68,6 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
         rotZ = z;
     }
     
-    
-    public void flyScenario(){
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                Timer timer = new Timer();
-                // Start in einer halben Sekunde dann Ablauf jede Sekunde
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        
-                        System.out.println("scenario wird geflogen");
-                        //Wenn die Drohne nicht gestartet ist, dann starte
-                        if(!model.getStarted()){
-                            model.start();
-                        }
-                        //Wenn die Drohne das Ziel(Einen Kreis fliegen) erreicht hat, dann stoppe die Drohne
-                        if(rotZ==360){
-                            model.stop();
-                        } else {
-                            //Sonst fliege das Scenario weiter
-                            model.speed(10); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
-                            model.rotation(0, 0, 5);
-                            System.out.println("bewege");
-                        }
-                    }
-                }, 500, 100);
-            }
-        });
-        
-    }
-    
-    public void fly8Scenario(){
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                Timer timer = new Timer();
-                // Start in einer halben Sekunde dann Ablauf jede Sekunde
-                timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    
-                if(!model.getStarted()){
-                    model.start();
-                    model.rotation(0, 0, 90);
-                }
-                if(rotZ == 450){
-                    firstLoop = false;
-                }
-                if(rotZ == 90 && !firstLoop){
-                    model.stop();
-                }
-                if(firstLoop){
-                    model.speed(10);
-                    model.rotation(0, 0, 5);
-                } else {
-                    model.speed(10);
-                    model.rotation(0, 0, -5);
-                }
-                }
-            }, 500, 100);
-            }
-        });
-    }
 
     @Override
     public void run() {
@@ -115,22 +76,15 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                  
-                //System.out.println("scenario wird geflogen");
                 //Wenn die Drohne nicht gestartet ist, dann starte
-                //System.out.println("Control Ticker läuft im: "+Thread.currentThread());
                 if(!model.getStarted()){
                     model.start();
                 }
-                //Wenn die Drohne das Ziel(Einen Kreis fliegen) erreicht hat, dann stoppe die Drohne
-                if(rotZ==360){
-                    model.stop();
-                } else {
-                    //Sonst fliege das Scenario weiter
-                    model.speed(10); //fliege im Kreis in dem du dich nach jeder Vorwärtsbewegung um 5 Grad drehst
-                    model.rotation(0, 0, 5);
-                    //System.out.println("bewege");
+                int i = 0;
+                if(refPointReached){
+                    i++;
                 }
+                model.setAktRef(refX.get(i), refY.get(i), refZ.get(i));
             }
         }, 1, 1000);
     }

@@ -147,7 +147,6 @@ public class TextVisualizer implements Observer{
     @Override
     public void update(double[] position, double[] rotation) {
        
-
                 visualize(position, rotation);
 
     }

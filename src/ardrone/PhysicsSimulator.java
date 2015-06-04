@@ -17,10 +17,15 @@ public class PhysicsSimulator {
     double droneAccel;
     
     double gravity = 980;
-    double Wind = 50;
+    
+    double forceX;
+    double forceY;
+    double forceZ;
     
     public PhysicsSimulator(World newWorld){
         myWorld = newWorld;
+        forceZ = forceZ-gravity;
+        setWind(0,0,0);
     }
     
     public void simulate(){
@@ -28,10 +33,15 @@ public class PhysicsSimulator {
         position = drone.getPosition();
         
         //drone.setPosition(position[0], position[1], position[2]-gravity);
-        droneAccel = (double)drone.getAttribute("Accel");
-        drone.setAttribute("Accel", droneAccel-gravity);
+        drone.setPosition(position[0]+forceX, position[1]+forceY, position[2]+forceZ);
         
         
+    }
+    
+    public void setWind(double x, double y, double z){
+        forceX = forceX + x;
+        forceY = forceY + y;
+        forceZ = forceZ + z;
     }
     
     public void collision(){
