@@ -15,6 +15,7 @@ public class SimpleARDroneModel implements DroneControl {
     static boolean startComplete = false;
     ARDroneActor droneActor;
     
+    static double tolerance = 0.5;
     static double aktSpeed;
     static double desSpeed;
     static double aktAccel;
@@ -39,7 +40,7 @@ public class SimpleARDroneModel implements DroneControl {
     
     public void tickPerSecond(){
         
-        System.out.println("tickperSecond "+ started + " " + startComplete);
+        //System.out.println("tickperSecond "+ started + " " + startComplete);
         if(droneActor==null){
             droneActor = World.getDrone();
         }
@@ -84,12 +85,14 @@ public class SimpleARDroneModel implements DroneControl {
                 startComplete = true;
             }
         } else if (started&&startComplete){
-            //Falls Höhe überschritten wurde
-            if(position[2]>startHeight){
-                aktSpeed = -0.2;
-                move();
-            } else {
+                
+                if(position[0]<refX+tolerance && position[0]>refX-tolerance && position[1]<refY+tolerance && position[1]>refY-tolerance && position[2]<refZ+tolerance && position[2]>refZ-tolerance){
+                    System.out.println("Wegpunkt erreicht!");
+                    stop();
+                }
                 //Fliege das Scenario
+                System.out.println("fliege zum Punkt");
+                
                 referenceVec[0] = refX - position[0];
                 referenceVec[1] = refY - position[1];
                 referenceVec[2] = refZ - position[2];
@@ -100,6 +103,8 @@ public class SimpleARDroneModel implements DroneControl {
                 
                 rotation(0, checkAngle(richtungsVec, tempVec), checkAngle(tempVec, referenceVec));
               
+                System.out.println("Winkel: " + checkAngle(richtungsVec,tempVec));
+                
                 rotToVec();
                 
                 aktSpeed = 5;//SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED!!!!!!!! DANN LÜÜPTS!
@@ -107,7 +112,7 @@ public class SimpleARDroneModel implements DroneControl {
                 move();
                 
                 
-            }
+            
         }
     }
     
@@ -182,7 +187,7 @@ public class SimpleARDroneModel implements DroneControl {
         scalar = skalarProdukt(vec1, vec2);
         length = betrag(vec1)*betrag(vec2);
         
-        angle = scalar/length;
+        angle = Math.toDegrees(Math.acos(scalar/length));
         
         return angle;
     }
