@@ -29,16 +29,18 @@ public class ScenarioASim {
             World myWorld = new World();
             myWorld.register(new DroneActorPositionAdapter());
             myWorld.register(new TextVisualizer());
-           
-            PhysicsSimulator engine = new PhysicsSimulator(myWorld);
 
             myWorld.createActor(); //Actor der Drohne auf Index 0
             myWorld.getActor(0).createAttribute("Name", "ARDrone");
             myWorld.getActor(0).createAttribute("Accel", (double)0.0);
+            myWorld.getActor(0).createAttribute("Accel_UP", (double)0.0);
             myWorld.getActor(0).createAttribute("Speed", (double)0.0);
+            myWorld.getActor(0).createAttribute("Speed_UP", (double)0.0);
             myWorld.getActor(0).createAttribute("Finnished", false); //Wird true wenn Scenario beendet
             myWorld.getActor(0).setPosition(0, 0, 0);
             myWorld.giveDroneObject(); //Actor der Drohne an SimpleARDroneModel übergeben
+            
+            PhysicsSimulator engine = new PhysicsSimulator(myWorld);
             
             //Timer um die DrohnenPosition regelmäßig anzeigen zu lassen
             Timer timer = new Timer();
@@ -47,10 +49,10 @@ public class ScenarioASim {
                 @Override
                 public void run() {
                  
-                    
+                    engine.collision();
                     myWorld.aktualisiere();
                     //engine.simulate();
-                    //engine.collision();
+                    
                     
                     if((boolean)myWorld.getActor(0).getAttribute("Finnished")){
                         if(this.cancel()){

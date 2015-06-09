@@ -33,6 +33,8 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
     double rotY;
     double rotZ;
     
+    int i = 0;
+    
     public ScenarioADroneControl(){
         //REFERENZPUNKTE SETZEN
         refX.add(100.0);
@@ -55,7 +57,7 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
     
     @Override
     public void setPosition(double x, double y, double z) {
-        model.tickPerSecond();
+        model.tickPerDeciSecond();
         posX = x;
         posY = y;
         posZ = z;
@@ -80,7 +82,7 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
                 if(!model.getStarted()){
                     model.start();
                 }
-                int i = 0;
+               
                 if(refPointReached){
                     i++;
                 }
