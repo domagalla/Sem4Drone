@@ -48,11 +48,7 @@ public class SimpleARDroneModel implements DroneControl {
     
     
     public void tickPerDeciSecond(){
-        
-        System.out.println("RichtungsVec: " + richtungsVec[0]+", "+richtungsVec[1]+", "+richtungsVec[2]);
-        System.out.println("tickperSecond "+ started + " " + startComplete);
-
-        
+       
         
         if(droneActor==null){
             droneActor = World.getDrone();
@@ -63,19 +59,8 @@ public class SimpleARDroneModel implements DroneControl {
         aktAccel_UP = (double)droneActor.getAttribute("Accel_UP");
         aktSpeed_UP = (double)droneActor.getAttribute("Speed_UP"); 
         gravity = (double)droneActor.getAttribute("gravity");
-       
-       
         dist = startHeight-position[2];
-        
-        /*if(aktSpeed_UP <= maxV){
-            
-        }
-        if(dist >= bremsdist){
-            
-        }
-        if(aktSpeed >= 0){
-            
-        }*/
+      
         if(started && !startComplete){
             System.out.println("Pos2 "+ position[2]+ "startHeight " + startHeight);
             //Solange die Starthöhe noch nicht erreicht ist
@@ -152,9 +137,9 @@ public class SimpleARDroneModel implements DroneControl {
                 
                 rotToVec();
                 
-               
+               aktSpeed= 5;
                 
-              //  move();
+               move();
      
         }
     }
@@ -167,19 +152,71 @@ public class SimpleARDroneModel implements DroneControl {
     }
     
     public void rotToVec(){
-        
+        /*
         richtungsVec[0]=Math.cos(Math.toRadians(rotation[2]))*rX-Math.sin(Math.toRadians(rotation[2]))*rY;
         richtungsVec[1]=Math.sin(Math.toRadians(rotation[2]))*rX+Math.cos(Math.toRadians(rotation[2]))*rY;
+    
+       
         richtungsVec[2]=rZ;
                 
         double tempX = richtungsVec[0];
-        double tempX2 = richtungsVec[2];        
-       
+
+  
+ 
         //Rotation um die Y-Achse
         richtungsVec[0]=Math.cos(Math.toRadians(rotation[1]))*richtungsVec[0]+Math.sin(Math.toRadians(rotation[1]))*richtungsVec[2];
-        
+             if(Double.isNaN(richtungsVec[0])){
+           richtungsVec[0] = 0.0;
+       }
+       
         //Y-Richtung bleibt gleich
         richtungsVec[2]=-Math.sin(Math.toRadians(rotation[1]))*tempX+Math.cos(Math.toRadians(rotation[1]))*richtungsVec[2];
+        
+              if(Double.isNaN(richtungsVec[2])){
+                  richtungsVec[2] = 0.0;
+              }
+               */ 
+        
+        /*
+        double[] n = vecProdukt(richtungsVec,referenceVec);
+        double angle = checkAngle(richtungsVec, referenceVec);
+        
+        richtungsVec[0]= rX*(Math.pow(n[0], 2)*(1-Math.cos(Math.toRadians(angle))+Math.cos(Math.toRadians(angle)))) + 
+                         rY*(n[0]*n[1]*(1-Math.cos(Math.toRadians(angle)))-n[2]*Math.sin(Math.toRadians(angle))) + 
+                         rZ*(n[0]*n[2]*(1-Math.cos(Math.toRadians(angle)))+n[1]*Math.sin(Math.toRadians(angle)));
+        
+        richtungsVec[1]= rX*(n[1]*n[0]*(1-Math.cos(Math.toRadians(angle))+n[2]*Math.sin(Math.toRadians(angle)))) + 
+                         rY*(Math.pow(n[1], 2)*(1-Math.cos(Math.toRadians(angle)))+Math.cos(Math.toRadians(angle))) + 
+                         rZ*(n[1]*n[2]*(1-Math.cos(Math.toRadians(angle)))-n[0]*Math.sin(Math.toRadians(angle)));
+        
+        richtungsVec[2]= rX*(n[2]*n[0]*(1-Math.cos(Math.toRadians(angle))-n[1]*Math.sin(Math.toRadians(angle)))) + 
+                         rY*(n[2]*n[1]*(1-Math.cos(Math.toRadians(angle)))+n[0]*Math.sin(Math.toRadians(angle))) + 
+                         rZ*(Math.pow(n[2], 2)*(1-Math.cos(Math.toRadians(angle)))+Math.cos(Math.toRadians(angle)));
+       */
+        
+        richtungsVec = getRichtung(richtungsVec, referenceVec);
+    }
+    
+    public double[] getRichtung(double[] vec1, double[] vec2){
+        
+        double[] richtung = new double[3];
+        
+        double[] n = vecProdukt(vec1,vec2);
+        double angle = checkAngle(vec1,vec2);
+        
+        richtung[0]=    vec1[0]*(Math.pow(n[0], 2)*(1-Math.cos(Math.toRadians(angle))+Math.cos(Math.toRadians(angle)))) + 
+                        vec1[1]*(n[0]*n[1]*(1-Math.cos(Math.toRadians(angle)))-n[2]*Math.sin(Math.toRadians(angle))) + 
+                        vec1[2]*(n[0]*n[2]*(1-Math.cos(Math.toRadians(angle)))+n[1]*Math.sin(Math.toRadians(angle)));
+        
+        richtung[1]=    vec1[0]*(n[1]*n[0]*(1-Math.cos(Math.toRadians(angle))+n[2]*Math.sin(Math.toRadians(angle)))) + 
+                        vec1[1]*(Math.pow(n[1], 2)*(1-Math.cos(Math.toRadians(angle)))+Math.cos(Math.toRadians(angle))) + 
+                        vec1[2]*(n[1]*n[2]*(1-Math.cos(Math.toRadians(angle)))-n[0]*Math.sin(Math.toRadians(angle)));
+        
+        richtung[2]=    vec1[0]*(n[2]*n[0]*(1-Math.cos(Math.toRadians(angle))-n[1]*Math.sin(Math.toRadians(angle)))) + 
+                        vec1[1]*(n[2]*n[1]*(1-Math.cos(Math.toRadians(angle)))+n[0]*Math.sin(Math.toRadians(angle))) + 
+                        vec1[2]*(Math.pow(n[2], 2)*(1-Math.cos(Math.toRadians(angle)))+Math.cos(Math.toRadians(angle)));
+        
+        return richtung;
     }
     
     public void setAktRef(double x, double y, double z){
@@ -204,6 +241,7 @@ public class SimpleARDroneModel implements DroneControl {
        // System.out.println("Drohne hat sich bewegt!");
        //  System.out.println(droneActor.getPosX() +" "+ droneActor.getPosY());
     }
+    
     public void rotation(double x, double y, double z){
         //Die Drohne rotiert ohne ihre Position zu verändern
         //Die Drohne rotiert gegen den Uhrzeigersinn (negative Rotation = im Uhrzeigersinn)
@@ -265,9 +303,9 @@ public class SimpleARDroneModel implements DroneControl {
         
         double[] vecReturn = new double[3];
         
-        vecReturn[1] = vecA[2]*vecB[3]-vecA[3]*vecB[2];
-        vecReturn[2] = vecA[3]*vecB[1]-vecA[1]*vecB[3];
-        vecReturn[3] = vecA[1]*vecB[2]-vecA[2]*vecB[1];
+        vecReturn[0] = vecA[1]*vecB[2]-vecA[2]*vecB[1];
+        vecReturn[1] = vecA[2]*vecB[0]-vecA[0]*vecB[2];
+        vecReturn[2] = vecA[0]*vecB[1]-vecA[1]*vecB[0];
         
         return vecReturn;
     

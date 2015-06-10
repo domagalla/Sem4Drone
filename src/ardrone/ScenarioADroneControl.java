@@ -37,9 +37,9 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
     
     public ScenarioADroneControl(){
         //REFERENZPUNKTE SETZEN
-        refX.add(100.0);
-        refY.add(100.0);
-        refZ.add(100.0);
+        refX.add(300.0);
+        refY.add(200.0);
+        refZ.add(350.0);
         
         refX.add(300.0);
         refY.add(100.0);
