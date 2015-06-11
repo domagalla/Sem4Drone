@@ -84,8 +84,12 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
                 }
                
                 if(SimpleARDroneModel.getCheckpointReached()){
-                    SimpleARDroneModel.resetCheckpointReached();
-                    i++;
+                    if(i>=refX.size()-1){
+                        model.stop();
+                    } else {
+                        SimpleARDroneModel.resetCheckpointReached();
+                        i++;
+                    }
                 }
                 model.setAktRef(refX.get(i), refY.get(i), refZ.get(i));
             }
