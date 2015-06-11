@@ -19,6 +19,8 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
     
     SimpleARDroneModel model = new SimpleARDroneModel();
     
+    Timer timer;
+    
     boolean firstLoop = true;
     boolean refPointReached = false;
     
@@ -73,7 +75,7 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
 
     @Override
     public void run() {
-        Timer timer = new Timer();
+        timer = new Timer();
         // Start in einer halben Sekunde dann Ablauf jede Sekunde
         timer.schedule(new TimerTask() {
             @Override
@@ -86,6 +88,7 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
                 if(SimpleARDroneModel.getCheckpointReached()){
                     if(i>=refX.size()-1){
                         model.stop();
+                        stop();
                     } else {
                         SimpleARDroneModel.resetCheckpointReached();
                         i++;
@@ -93,7 +96,11 @@ public class ScenarioADroneControl implements DronePosition, Runnable{
                 }
                 model.setAktRef(refX.get(i), refY.get(i), refZ.get(i));
             }
-        }, 1, 1000);
+        }, 1, 50);
+    }
+    
+    private void stop(){
+        timer.cancel();
     }
 
 }

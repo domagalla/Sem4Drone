@@ -49,9 +49,10 @@ public class ScenarioASim {
                 @Override
                 public void run() {
                  
-                    engine.collision();
+                    
                     myWorld.aktualisiere();
                     //engine.simulate();
+                    engine.collision();
                     
                     
                     if((boolean)myWorld.getActor(0).getAttribute("Finnished")){
