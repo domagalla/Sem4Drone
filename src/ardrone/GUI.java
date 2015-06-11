@@ -19,6 +19,9 @@ public class GUI extends JFrame implements Runnable {
     double x;
     double y;
     double z;
+    double refX;
+    double refY;
+    double refZ;
     double rot;
     /**
      * Creates new form NewJFrame1
@@ -62,6 +65,16 @@ public class GUI extends JFrame implements Runnable {
            
         repaint();
      }
+    
+    void zeichneRefPunkte(double prefX, double prefY, double prefZ){
+        
+        refX = prefX;
+        refY = prefY;
+        refZ = prefZ;
+        
+        
+    }
+            
         
 }
 
