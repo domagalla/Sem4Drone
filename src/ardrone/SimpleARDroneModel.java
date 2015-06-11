@@ -17,8 +17,8 @@ public class SimpleARDroneModel implements DroneControl {
     static boolean steigen = true;
     ARDroneActor droneActor;
     
-    static double tolerance = 60;
-    static double aktSpeed;
+    static double tolerance = 10;
+    static double aktSpeed = 0;
     static double desSpeed;
     static double aktAccel;
     static double aktAccel_UP = 0;
@@ -69,14 +69,7 @@ public class SimpleARDroneModel implements DroneControl {
             if(position[2]<startHeight){
                 //Fliege auf die Starthöhe
                 
-                
-                /*
-                droneActor.setAttribute("Accel", aktAccel);
-                aktSpeed = aktSpeed+0.2;
-                */
-                
-                //droneActor.setAttribute("Accel_UP", 99.0);
-                
+   
                 if(aktSpeed_UP <= maxV && steigen){
                     droneActor.setAttribute("Accel_UP", 99.0);
                     aktSpeed_UP = (double) droneActor.getAttribute("Accel_UP")-gravity +aktSpeed_UP;
@@ -103,7 +96,7 @@ public class SimpleARDroneModel implements DroneControl {
                 
               //  System.out.println("Speed: "+ aktSpeed_UP);
               //  System.out.println("X-Richtung: " +richtungsVec[0]+" Y-Richtung: " +richtungsVec[1]+ " Z-Richtung: " +richtungsVec[2]);
-            
+              
             } else {
                 startComplete = true; 
                       
@@ -130,7 +123,12 @@ public class SimpleARDroneModel implements DroneControl {
                 
                 richtungsVec = getRichtung(richtungsVec, referenceVec);
                 
-                aktSpeed= 5;
+                
+                //Bewegungsgeschwindigkeit und Bremswegberechnung
+                
+                
+              aktSpeed = 5;
+               
                
                 move();
      

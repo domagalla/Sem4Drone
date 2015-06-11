@@ -156,7 +156,7 @@ public class TextVisualizer implements Observer{
 	//System.out.println("Drone bewegt sich auf " + pos[0] +", "+ pos[1] +", "+ pos[2]);
         //System.out.println("Drohne ist um "+ rot[2] +" Grad rotiert");
        g.zeichneDrone(pos[0],pos[1],pos[2]);
-        
+      
        if(single){
             
             new Thread(new Runnable() {
