@@ -11,12 +11,13 @@ package ardrone;
  */
 public class SimpleARDroneModel implements DroneControl {
     
+    static boolean checkpointReached = false;
     static boolean started = false;
     static boolean startComplete = false;
     static boolean steigen = true;
     ARDroneActor droneActor;
     
-    static double tolerance = 10;
+    static double tolerance = 60;
     static double aktSpeed;
     static double desSpeed;
     static double aktAccel;
@@ -32,7 +33,7 @@ public class SimpleARDroneModel implements DroneControl {
     static double rY=0;
     static double rZ=0;
     
-    static double[] richtungsVec = new double[3];
+    static double[] richtungsVec = new double[]{rX,rY,rZ};
     static double[] referenceVec = new double[3];
     static double[] tempVec = new double[3];
   
@@ -45,7 +46,7 @@ public class SimpleARDroneModel implements DroneControl {
     static double maxV = 10;
     
     static double dist;
-    
+     double angle;
     
     public void tickPerDeciSecond(){
        
@@ -60,6 +61,7 @@ public class SimpleARDroneModel implements DroneControl {
         aktSpeed_UP = (double)droneActor.getAttribute("Speed_UP"); 
         gravity = (double)droneActor.getAttribute("gravity");
         dist = startHeight-position[2];
+        
       
         if(started && !startComplete){
             System.out.println("Pos2 "+ position[2]+ "startHeight " + startHeight);
@@ -111,9 +113,10 @@ public class SimpleARDroneModel implements DroneControl {
                
                
                  if(position[0]<refX+tolerance && position[0]>refX-tolerance && position[1]<refY+tolerance && position[1]>refY-tolerance && position[2]<refZ+tolerance && position[2]>refZ-tolerance){
+                  
                     System.out.println("Wegpunkt erreicht!");
-                    
-                    stop();
+                    checkpointReached = true;
+                     
                 }
                   
                  
@@ -125,21 +128,11 @@ public class SimpleARDroneModel implements DroneControl {
                 referenceVec[1] = refY - position[1];
                 referenceVec[2] = refZ - position[2];
                 
+                richtungsVec = getRichtung(richtungsVec, referenceVec);
                 
-                
-                tempVec[0] = referenceVec[0];
-                tempVec[1] = richtungsVec[1];   
-                tempVec[2] = referenceVec[2];
-                
-                rotation(0, checkAngle(richtungsVec, tempVec), checkAngle(tempVec, referenceVec));
-              
-                System.out.println("TempVec " + richtungsVec[0]+ ","+ richtungsVec[2]);
-                
-                rotToVec();
-                
-               aktSpeed= 5;
-                
-               move();
+                aktSpeed= 5;
+               
+                move();
      
         }
     }
@@ -152,48 +145,6 @@ public class SimpleARDroneModel implements DroneControl {
     }
     
     public void rotToVec(){
-        /*
-        richtungsVec[0]=Math.cos(Math.toRadians(rotation[2]))*rX-Math.sin(Math.toRadians(rotation[2]))*rY;
-        richtungsVec[1]=Math.sin(Math.toRadians(rotation[2]))*rX+Math.cos(Math.toRadians(rotation[2]))*rY;
-    
-       
-        richtungsVec[2]=rZ;
-                
-        double tempX = richtungsVec[0];
-
-  
- 
-        //Rotation um die Y-Achse
-        richtungsVec[0]=Math.cos(Math.toRadians(rotation[1]))*richtungsVec[0]+Math.sin(Math.toRadians(rotation[1]))*richtungsVec[2];
-             if(Double.isNaN(richtungsVec[0])){
-           richtungsVec[0] = 0.0;
-       }
-       
-        //Y-Richtung bleibt gleich
-        richtungsVec[2]=-Math.sin(Math.toRadians(rotation[1]))*tempX+Math.cos(Math.toRadians(rotation[1]))*richtungsVec[2];
-        
-              if(Double.isNaN(richtungsVec[2])){
-                  richtungsVec[2] = 0.0;
-              }
-               */ 
-        
-        /*
-        double[] n = vecProdukt(richtungsVec,referenceVec);
-        double angle = checkAngle(richtungsVec, referenceVec);
-        
-        richtungsVec[0]= rX*(Math.pow(n[0], 2)*(1-Math.cos(Math.toRadians(angle))+Math.cos(Math.toRadians(angle)))) + 
-                         rY*(n[0]*n[1]*(1-Math.cos(Math.toRadians(angle)))-n[2]*Math.sin(Math.toRadians(angle))) + 
-                         rZ*(n[0]*n[2]*(1-Math.cos(Math.toRadians(angle)))+n[1]*Math.sin(Math.toRadians(angle)));
-        
-        richtungsVec[1]= rX*(n[1]*n[0]*(1-Math.cos(Math.toRadians(angle))+n[2]*Math.sin(Math.toRadians(angle)))) + 
-                         rY*(Math.pow(n[1], 2)*(1-Math.cos(Math.toRadians(angle)))+Math.cos(Math.toRadians(angle))) + 
-                         rZ*(n[1]*n[2]*(1-Math.cos(Math.toRadians(angle)))-n[0]*Math.sin(Math.toRadians(angle)));
-        
-        richtungsVec[2]= rX*(n[2]*n[0]*(1-Math.cos(Math.toRadians(angle))-n[1]*Math.sin(Math.toRadians(angle)))) + 
-                         rY*(n[2]*n[1]*(1-Math.cos(Math.toRadians(angle)))+n[0]*Math.sin(Math.toRadians(angle))) + 
-                         rZ*(Math.pow(n[2], 2)*(1-Math.cos(Math.toRadians(angle)))+Math.cos(Math.toRadians(angle)));
-       */
-        
         richtungsVec = getRichtung(richtungsVec, referenceVec);
     }
     
@@ -202,17 +153,18 @@ public class SimpleARDroneModel implements DroneControl {
         double[] richtung = new double[3];
         
         double[] n = vecProdukt(vec1,vec2);
+        n = vereinheitliche(n);
         double angle = checkAngle(vec1,vec2);
         
-        richtung[0]=    vec1[0]*(Math.pow(n[0], 2)*(1-Math.cos(Math.toRadians(angle))+Math.cos(Math.toRadians(angle)))) + 
+        richtung[0]=    vec1[0]*(Math.pow(n[0], 2)*(1-Math.cos(Math.toRadians(angle)))+Math.cos(Math.toRadians(angle))) + 
                         vec1[1]*(n[0]*n[1]*(1-Math.cos(Math.toRadians(angle)))-n[2]*Math.sin(Math.toRadians(angle))) + 
                         vec1[2]*(n[0]*n[2]*(1-Math.cos(Math.toRadians(angle)))+n[1]*Math.sin(Math.toRadians(angle)));
         
-        richtung[1]=    vec1[0]*(n[1]*n[0]*(1-Math.cos(Math.toRadians(angle))+n[2]*Math.sin(Math.toRadians(angle)))) + 
+        richtung[1]=    vec1[0]*(n[1]*n[0]*(1-Math.cos(Math.toRadians(angle)))+n[2]*Math.sin(Math.toRadians(angle))) + 
                         vec1[1]*(Math.pow(n[1], 2)*(1-Math.cos(Math.toRadians(angle)))+Math.cos(Math.toRadians(angle))) + 
                         vec1[2]*(n[1]*n[2]*(1-Math.cos(Math.toRadians(angle)))-n[0]*Math.sin(Math.toRadians(angle)));
         
-        richtung[2]=    vec1[0]*(n[2]*n[0]*(1-Math.cos(Math.toRadians(angle))-n[1]*Math.sin(Math.toRadians(angle)))) + 
+        richtung[2]=    vec1[0]*(n[2]*n[0]*(1-Math.cos(Math.toRadians(angle)))-n[1]*Math.sin(Math.toRadians(angle))) + 
                         vec1[1]*(n[2]*n[1]*(1-Math.cos(Math.toRadians(angle)))+n[0]*Math.sin(Math.toRadians(angle))) + 
                         vec1[2]*(Math.pow(n[2], 2)*(1-Math.cos(Math.toRadians(angle)))+Math.cos(Math.toRadians(angle)));
         
@@ -269,16 +221,26 @@ public class SimpleARDroneModel implements DroneControl {
     }
     
     private double checkAngle(double[] vec1, double[] vec2){
-        double angle;
+       
         double scalar;
         double length;
         
         scalar = skalarProdukt(vec1, vec2);
         length = betrag(vec1)*betrag(vec2);
         
-        angle = Math.toDegrees(Math.acos(scalar/length));
-        System.out.println("ANGLE: " +angle);
-        return angle;
+        System.out.println("Scalar: " +scalar+ " length: "+ length);
+        if(!Double.isNaN(Math.toDegrees(Math.acos(scalar/length)))){
+            angle = Math.toDegrees(Math.acos(scalar/length));
+                    System.out.println("ANGLE: " +angle);
+            return angle;
+            
+        } else {
+             System.out.println("ANGLE: " +angle);
+            return angle;
+        }
+        
+
+        
     }
     
     private double skalarProdukt(double[] vec1, double[] vec2){
@@ -315,5 +277,12 @@ public class SimpleARDroneModel implements DroneControl {
         return bremsdistanz;
     }
 
+    public static boolean getCheckpointReached(){
+        return checkpointReached;
+    }
+    
+    public static void resetCheckpointReached(){
+       checkpointReached = false;
+    }
     
 }
