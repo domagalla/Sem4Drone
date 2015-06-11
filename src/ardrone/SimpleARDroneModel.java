@@ -48,6 +48,8 @@ public class SimpleARDroneModel implements DroneControl {
     static double dist;
     double angle;
     
+    static double streckeZuRefpunkt;
+    
     public void tickPerDeciSecond(){
        
         
@@ -113,7 +115,7 @@ public class SimpleARDroneModel implements DroneControl {
                     checkpointReached = true;
                      
                 }
-                  
+             
                  
                 //Fliege das Scenario
                //  System.out.println("X-Richtung: " +richtungsVec[0]+" Y-Richtung: " +richtungsVec[1]+ " Z-Richtung: " +richtungsVec[2]);
@@ -127,9 +129,9 @@ public class SimpleARDroneModel implements DroneControl {
                 //Bewegungsgeschwindigkeit und Bremswegberechnung
                 
                 
-                
-              aktSpeed = getCalculatedSpeed(berechneStreckeDronePunkt(position,referenceVec));
                
+              aktSpeed = getCalculatedSpeed(betrag(referenceVec), aktSpeed);
+    
                
                 move();
             }
@@ -171,9 +173,13 @@ public class SimpleARDroneModel implements DroneControl {
     }
     
     public void setAktRef(double x, double y, double z){
+         
         refX = x;
         refY = y;
-        refZ = z;
+        refZ = z;    
+      
+            
+        
     }
     
     public void speed(double speed){
@@ -273,26 +279,18 @@ public class SimpleARDroneModel implements DroneControl {
        checkpointReached = false;
     }
 
-    private double berechneStreckeDronePunkt(double [] drone, double[] ref) {
-        double[] strecke = new double[3];
-       strecke[0] = ref[0] - drone[0];
-         strecke[1] = ref[1] - drone[1];
-          strecke[2] = ref[0] - drone[2];
-         
-          return betrag(strecke);
-    }
-
-    private double getCalculatedSpeed(double strecke) {
-       double speed = 0;
-       double halbeStrecke = strecke/2;
+    private double getCalculatedSpeed(double strecke, double speed) {
+       double tempSpeed = speed;
        
-       if(){
+       
+           if(strecke-2<=tempSpeed){
+              tempSpeed = tempSpeed-3;
+           } else 
+                if(speed<= maxV){
+           tempSpeed+= .5;
+           }
            
-       }
-       
-       
-       
-        return speed;
+        return tempSpeed;
     }
     
 }

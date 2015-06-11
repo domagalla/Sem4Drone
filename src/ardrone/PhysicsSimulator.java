@@ -26,7 +26,7 @@ public class PhysicsSimulator {
         myWorld = newWorld;
         drone = (ARDroneActor) myWorld.getActor(0);
         forceZ = forceZ-gravity;
-        setWind(1,-2,-1);
+        setWind(-1,-1,-1);
         drone.createAttribute("gravity", gravity);
     }
     

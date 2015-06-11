@@ -51,7 +51,7 @@ public class ScenarioASim {
                  
                     
                     myWorld.aktualisiere();
-                    //engine.simulate();
+                    engine.simulate();
                     engine.collision();
                     
                     
