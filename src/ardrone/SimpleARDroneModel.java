@@ -46,7 +46,7 @@ public class SimpleARDroneModel implements DroneControl {
     static double maxV = 10;
     
     static double dist;
-     double angle;
+    double angle;
     
     public void tickPerDeciSecond(){
        
@@ -105,15 +105,17 @@ public class SimpleARDroneModel implements DroneControl {
               //  System.out.println("X-Richtung: " +richtungsVec[0]+" Y-Richtung: " +richtungsVec[1]+ " Z-Richtung: " +richtungsVec[2]);
             
             } else {
-                startComplete = true; 
-                      
+                startComplete = true;         
             }
-            
+  
         } else if (started&&startComplete){
-               
-               
-                 if(position[0]<refX+tolerance && position[0]>refX-tolerance && position[1]<refY+tolerance && position[1]>refY-tolerance && position[2]<refZ+tolerance && position[2]>refZ-tolerance){
-                  
+            if((boolean)droneActor.getAttribute("Finnished")){
+                
+            } else {
+                if(position[0]<refX+tolerance && position[0]>refX-tolerance && position[1]<refY+tolerance && position[1]>refY-tolerance && position[2]<refZ+tolerance && position[2]>refZ-tolerance){
+                    
+                    System.out.println("Pos: "+ position[0]+", "+position[1]+", "+position[2]);
+                    System.out.println("Ref: "+ refX+", "+refY+", "+refZ);
                     System.out.println("Wegpunkt erreicht!");
                     checkpointReached = true;
                      
@@ -121,8 +123,6 @@ public class SimpleARDroneModel implements DroneControl {
                   
                  
                 //Fliege das Scenario
-               
-                System.out.println("fliege zum Punkt");
                //  System.out.println("X-Richtung: " +richtungsVec[0]+" Y-Richtung: " +richtungsVec[1]+ " Z-Richtung: " +richtungsVec[2]);
                 referenceVec[0] = refX - position[0];
                 referenceVec[1] = refY - position[1];
@@ -133,7 +133,7 @@ public class SimpleARDroneModel implements DroneControl {
                 aktSpeed= 5;
                
                 move();
-     
+            }
         }
     }
     
@@ -154,7 +154,7 @@ public class SimpleARDroneModel implements DroneControl {
         
         double[] n = vecProdukt(vec1,vec2);
         n = vereinheitliche(n);
-        double angle = checkAngle(vec1,vec2);
+        double angle = checkAngle(vec1,vec2)/2;
         
         richtung[0]=    vec1[0]*(Math.pow(n[0], 2)*(1-Math.cos(Math.toRadians(angle)))+Math.cos(Math.toRadians(angle))) + 
                         vec1[1]*(n[0]*n[1]*(1-Math.cos(Math.toRadians(angle)))-n[2]*Math.sin(Math.toRadians(angle))) + 
@@ -175,33 +175,23 @@ public class SimpleARDroneModel implements DroneControl {
         refX = x;
         refY = y;
         refZ = z;
-        
-        
-       //System.out.println(+  refX +":x  " +  refY +":y  "+  refZ +":z  ");
     }
     
     public void speed(double speed){
         desSpeed = speed;
-        //position = droneActor.getPosition();
-        //rotation = droneActor.getRotation();
-        //Position der Drohne wird in Abhängigkeit von der aktuellen Rotation der Drohne verändert
-        /*
-        droneActor.setPosition(position[0]+speed*Math.cos(Math.toRadians(rotation[2])),
-                          position[1]+speed*Math.sin(Math.toRadians(rotation[2])),
-                          position[2]);
-                */
-       // System.out.println("Drohne hat sich bewegt!");
-       //  System.out.println(droneActor.getPosX() +" "+ droneActor.getPosY());
     }
     
+    @Override
     public void rotation(double x, double y, double z){
         //Die Drohne rotiert ohne ihre Position zu verändern
         //Die Drohne rotiert gegen den Uhrzeigersinn (negative Rotation = im Uhrzeigersinn)
          droneActor.setRotation(x, y, z);
          rotation = droneActor.getRotation();
     }
+    @Override
     public void stop(){
         droneActor.setPosition(droneActor.getPosition()[0], droneActor.getPosition()[1], 0);
+        System.out.println("Pos: "+ position[0]+", "+position[1]+", "+position[2]);
         System.out.println("Drohne ist gelandet");
         
         droneActor.setAttribute("Finnished", true);
@@ -228,14 +218,13 @@ public class SimpleARDroneModel implements DroneControl {
         scalar = skalarProdukt(vec1, vec2);
         length = betrag(vec1)*betrag(vec2);
         
-        System.out.println("Scalar: " +scalar+ " length: "+ length);
         if(!Double.isNaN(Math.toDegrees(Math.acos(scalar/length)))){
             angle = Math.toDegrees(Math.acos(scalar/length));
-                    System.out.println("ANGLE: " +angle);
+            //System.out.println("ANGLE: " +angle);
             return angle;
             
         } else {
-             System.out.println("ANGLE: " +angle);
+            //System.out.println("ANGLE: " +angle);
             return angle;
         }
         
