@@ -127,7 +127,8 @@ public class SimpleARDroneModel implements DroneControl {
                 //Bewegungsgeschwindigkeit und Bremswegberechnung
                 
                 
-              aktSpeed = 5;
+                
+              aktSpeed = getCalculatedSpeed(berechneStreckeDronePunkt(position,referenceVec));
                
                
                 move();
@@ -281,6 +282,28 @@ public class SimpleARDroneModel implements DroneControl {
     
     public static void resetCheckpointReached(){
        checkpointReached = false;
+    }
+
+    private double berechneStreckeDronePunkt(double [] drone, double[] ref) {
+        double[] strecke = new double[3];
+       strecke[0] = ref[0] - drone[0];
+         strecke[1] = ref[1] - drone[1];
+          strecke[2] = ref[0] - drone[2];
+         
+          return betrag(strecke);
+    }
+
+    private double getCalculatedSpeed(double strecke) {
+       double speed = 0;
+       double halbeStrecke = strecke/2;
+       
+       if(){
+           
+       }
+       
+       
+       
+        return speed;
     }
     
 }
