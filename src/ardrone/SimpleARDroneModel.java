@@ -5,6 +5,8 @@
  */
 package ardrone;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Oliver Kaup
@@ -15,9 +17,14 @@ public class SimpleARDroneModel implements DroneControl {
     static boolean started = false;
     static boolean startComplete = false;
     static boolean steigen = true;
-    ARDroneActor droneActor;
+    static boolean evade = false;
     
-    static double tolerance = 10;
+    ARDroneActor droneActor;
+    ArrayList<Actor> actorList;
+    
+    static double weitblick = 40; //Wie weit die Drohne vor sich guckt, um ausweichen zu können
+    static double tolerance = 10; //Wie nah die Drohne an die Referenzpunkte fliegen muss
+    
     static double aktSpeed = 0;
     static double desSpeed;
     static double aktAccel;
@@ -36,6 +43,8 @@ public class SimpleARDroneModel implements DroneControl {
     static double[] richtungsVec = new double[]{rX,rY,rZ};
     static double[] referenceVec = new double[3];
     static double[] tempVec = new double[3];
+    static double[] evadeVec = new double[3];
+    
   
     
     static double[] position;
@@ -51,7 +60,7 @@ public class SimpleARDroneModel implements DroneControl {
     static double streckeZuRefpunkt;
     
     public void tickPerDeciSecond(){
-       
+        
         
         if(droneActor==null){
             droneActor = World.getDrone();
@@ -107,6 +116,8 @@ public class SimpleARDroneModel implements DroneControl {
             if((boolean)droneActor.getAttribute("Finnished")){
                 
             } else {
+                
+                //Falls ein Wegpunkt erreicht wurde
                 if(position[0]<refX+tolerance && position[0]>refX-tolerance && position[1]<refY+tolerance && position[1]>refY-tolerance && position[2]<refZ+tolerance && position[2]>refZ-tolerance){
                     
                     System.out.println("Pos: "+ position[0]+", "+position[1]+", "+position[2]);
@@ -115,47 +126,90 @@ public class SimpleARDroneModel implements DroneControl {
                     checkpointReached = true;
                      
                 }
-             
-                 
+               
                 //Fliege das Scenario
-               //  System.out.println("X-Richtung: " +richtungsVec[0]+" Y-Richtung: " +richtungsVec[1]+ " Z-Richtung: " +richtungsVec[2]);
+                //  System.out.println("X-Richtung: " +richtungsVec[0]+" Y-Richtung: " +richtungsVec[1]+ " Z-Richtung: " +richtungsVec[2]);
                 referenceVec[0] = refX - position[0];
                 referenceVec[1] = refY - position[1];
                 referenceVec[2] = refZ - position[2];
                 
-                richtungsVec = getRichtung(richtungsVec, referenceVec);
+                if(evade){
+                    //Ausweichen statt auf Referenzpunkt zuzufliegen
+                    System.out.println("Kollision");
+                    
+                    evadeVec = new double[3];
+                    int alpha= -30;
+                    evadeVec[0] = richtungsVec[0]*Math.cos(Math.toRadians(alpha))-richtungsVec[1]*Math.sin(Math.toRadians(alpha));
+                    evadeVec[1] = richtungsVec[0]*Math.sin(Math.toRadians(alpha))+richtungsVec[1]*Math.cos(Math.toRadians(alpha));
+                    evadeVec[2] = richtungsVec[2];
+                    richtungsVec = getRichtung(richtungsVec, evadeVec, 1);
+                            
+                    move();
+                    
+                } else {
+                
+                    //System.out.println("Keine Kollision");
+                    richtungsVec = getRichtung(richtungsVec, referenceVec, 2);
                 
                 
-                //Bewegungsgeschwindigkeit und Bremswegberechnung
+                    //Bewegungsgeschwindigkeit und Bremswegberechnung
                 
                 
                
-              aktSpeed = getCalculatedSpeed(betrag(referenceVec), aktSpeed);
+                    aktSpeed = getCalculatedSpeed(betrag(referenceVec), aktSpeed);
     
                
-                move();
+                    move();
+                }
             }
         }
     }
     
     public void move(){
-         
+        
+        checkCollision();
+          
         droneActor.setPosition(position[0]+aktSpeed*richtungsVec[0],
                                position[1]+aktSpeed*richtungsVec[1],
                                position[2]+aktSpeed*richtungsVec[2]);
+
     }
     
-    public void rotToVec(){
-        richtungsVec = getRichtung(richtungsVec, referenceVec);
+    public void checkCollision(){
+        if(actorList==null){
+            actorList = World.getActors();
+        }
+        int actors = actorList.size();
+        for(int i = 1; i<=actors-1; i++){
+            Actor tempActor = actorList.get(i);
+            double[] colPos = tempActor.getPosition();
+            double colX = (double)tempActor.getAttribute("x");
+            double colY = (double)tempActor.getAttribute("y");
+            double colZ = (double)tempActor.getAttribute("z");
+            
+            for(double j=0;j<=weitblick;j+=0.2){
+                if(position[0]+weitblick*richtungsVec[0]>=colPos[0]&&position[0]+weitblick*richtungsVec[0]<=colPos[0]+colX){
+                    if(position[1]+weitblick*richtungsVec[1]>=colPos[1]&&position[1]+weitblick*richtungsVec[1]<=colPos[1]+colY){
+                        if(position[2]+weitblick*richtungsVec[2]>=colPos[2]&&position[2]+weitblick*richtungsVec[2]<=colPos[2]+colZ){
+                            evade = true;
+                            System.out.println("Pos: "+ position[0]+", "+position[1]+", "+position[2]);
+                            System.out.println("Richtung: "+ richtungsVec[0]+", "+richtungsVec[1]+", "+richtungsVec[2]);
+                            System.out.println("Vorraussichtliche Kollision");
+                            break;
+                        } else {evade = false;}
+                    } else {evade = false;}
+                } else {evade = false;}
+            }
+        }
     }
     
-    public double[] getRichtung(double[] vec1, double[] vec2){
+    public double[] getRichtung(double[] vec1, double[] vec2, double curve){
         
         double[] richtung = new double[3];
         
         double[] n = vecProdukt(vec1,vec2);
         n = vereinheitliche(n);
-        double angle = checkAngle(vec1,vec2)/2;
+        double angle = checkAngle(vec1,vec2)/curve;
         
         richtung[0]=    vec1[0]*(Math.pow(n[0], 2)*(1-Math.cos(Math.toRadians(angle)))+Math.cos(Math.toRadians(angle))) + 
                         vec1[1]*(n[0]*n[1]*(1-Math.cos(Math.toRadians(angle)))-n[2]*Math.sin(Math.toRadians(angle))) + 

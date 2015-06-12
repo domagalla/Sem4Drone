@@ -40,6 +40,13 @@ public class ScenarioASim {
             myWorld.getActor(0).setPosition(0, 0, 0);
             myWorld.giveDroneObject(); //Actor der Drohne an SimpleARDroneModel übergeben
             
+            //Box erstellen
+            myWorld.createActor();
+            myWorld.getActor(1).createAttribute("x", 60.0);
+            myWorld.getActor(1).createAttribute("y", 60.0);
+            myWorld.getActor(1).createAttribute("z", 60.0);
+            myWorld.getActor(1).setPosition(175, 75, 100);
+            
             PhysicsSimulator engine = new PhysicsSimulator(myWorld);
             
             //Timer um die DrohnenPosition regelmäßig anzeigen zu lassen
@@ -51,7 +58,7 @@ public class ScenarioASim {
                  
                     
                     myWorld.aktualisiere();
-                    engine.simulate();
+                    //engine.simulate();
                     engine.collision();
                     
                     
@@ -86,7 +93,8 @@ public class ScenarioASim {
             myWorld.giveRoomBoundaries(); //Raumbegrenzung an die GUI übergeben
             */
             
-            
+            //Nachdem alle Actor erzeugt wurden soll die ActorList weitergegeben werden
+            myWorld.giveActorList();
         }
 	
 }

@@ -15,6 +15,7 @@ import java.util.Observable;
 public class World implements WorldControl, WorldEvents{
         
         private static ARDroneActor drone;
+        private static ArrayList<Actor> aktActorList; 
     
         //Liste mit Actors, wird in ScenarioASim gefüllt
         ArrayList <Actor> actorList = new ArrayList<Actor>();
@@ -25,6 +26,10 @@ public class World implements WorldControl, WorldEvents{
 		return actorList.get(index);
      
 	}
+        
+        public static ArrayList getActors(){
+            return aktActorList;
+        }
         
         public static ARDroneActor getDrone(){
             if(drone!=null){
@@ -69,6 +74,10 @@ public class World implements WorldControl, WorldEvents{
         public void giveDroneObject(){
             drone = (ARDroneActor)getActor(0);
             System.out.println(drone);
+        }
+        
+        public void giveActorList(){
+            aktActorList = actorList;
         }
         
         //stetig aufgerufen um die aktuelle Position der Drone an die Observer zu geben
