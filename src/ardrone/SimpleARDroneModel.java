@@ -45,7 +45,7 @@ public class SimpleARDroneModel implements DroneControl {
     static double[] tempVec = new double[3];
     static double[] evadeVec = new double[3];
     
-  
+    static double evadePuffer;
     
     static double[] position;
     static double[] rotation;
@@ -133,22 +133,23 @@ public class SimpleARDroneModel implements DroneControl {
                 referenceVec[1] = refY - position[1];
                 referenceVec[2] = refZ - position[2];
                 
-                if(evade){
+                if(evade||evadePuffer>0){
                     //Ausweichen statt auf Referenzpunkt zuzufliegen
                     System.out.println("Kollision");
                     
                     evadeVec = new double[3];
-                    int alpha= -30;
+                    int alpha= -10;
                     evadeVec[0] = richtungsVec[0]*Math.cos(Math.toRadians(alpha))-richtungsVec[1]*Math.sin(Math.toRadians(alpha));
                     evadeVec[1] = richtungsVec[0]*Math.sin(Math.toRadians(alpha))+richtungsVec[1]*Math.cos(Math.toRadians(alpha));
                     evadeVec[2] = richtungsVec[2];
                     richtungsVec = getRichtung(richtungsVec, evadeVec, 1);
+                    evadePuffer--;
                             
                     move();
                     
                 } else {
                 
-                    //System.out.println("Keine Kollision");
+                    System.out.println("Keine Kollision");
                     richtungsVec = getRichtung(richtungsVec, referenceVec, 2);
                 
                 
@@ -192,6 +193,7 @@ public class SimpleARDroneModel implements DroneControl {
                     if(position[1]+weitblick*richtungsVec[1]>=colPos[1]&&position[1]+weitblick*richtungsVec[1]<=colPos[1]+colY){
                         if(position[2]+weitblick*richtungsVec[2]>=colPos[2]&&position[2]+weitblick*richtungsVec[2]<=colPos[2]+colZ){
                             evade = true;
+                            evadePuffer = 10;
                             System.out.println("Pos: "+ position[0]+", "+position[1]+", "+position[2]);
                             System.out.println("Richtung: "+ richtungsVec[0]+", "+richtungsVec[1]+", "+richtungsVec[2]);
                             System.out.println("Vorraussichtliche Kollision");
