@@ -50,10 +50,16 @@ public class GUI extends JFrame implements Runnable {
         //System.out.println("GUI Ticker läuft im: "+Thread.currentThread());
         g.clearRect(0, 0, getWidth(), getHeight());//clearRect legt ein Rechteck über das Frame um vorhandene Elemente zu "entfernen"
         g.fillOval((int)Math.round(x)+100,(int)Math.round(y)+100, 10, 10); //Oval DronenPosition
+        
+        g.fillOval(0+100,200+100, 5, 5); // refPoint
+        g.fillOval(200+100,300+100, 5, 5); // refPoint
+        g.fillOval(350+100,200+100, 5, 5); // refPoint
+        g.fillOval(500+100,500+100, 5, 5); // refPoint
+        
         g.drawRect(275, 175, 60, 60);
         g.drawString("ARDrone", (int)Math.round(x)+115,(int)Math.round(y)+110); // String für DronenPunkt
         g.setColor(Color.black); 
-        g.drawString("X:        "+Double.toString(x)+"        Y:        "+Double.toString(y)+"        Z:        "+Double.toString(z), 400, 400); 
+        g.drawString("X:        "+Double.toString(Math.round(x))+"        Y:        "+Double.toString(Math.round(y))+"        Z:        "+Double.toString(Math.round(z)), 600, 700); 
         //Darstellung der Positionswerte
 
         
