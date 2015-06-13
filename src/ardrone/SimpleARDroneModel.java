@@ -6,13 +6,26 @@
 package ardrone;
 
 import java.util.ArrayList;
-
+import com.shigeodayo.ardrone.ARDrone;
+import com.shigeodayo.ardrone.navdata.AttitudeListener;
+import com.shigeodayo.ardrone.navdata.BatteryListener;
+import com.shigeodayo.ardrone.navdata.DroneState;
+import com.shigeodayo.ardrone.navdata.StateListener;
+import com.shigeodayo.ardrone.navdata.VelocityListener;
+import com.shigeodayo.ardrone.video.ImageListener;
+import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 /**
  *
  * @author Oliver Kaup
  */
 public class SimpleARDroneModel implements DroneControl {
     
+    
+    private static ARDrone ardrone;
+            
     static boolean checkpointReached = false;
     static boolean started = false;
     static boolean startComplete = false;
@@ -58,6 +71,10 @@ public class SimpleARDroneModel implements DroneControl {
     double angle;
     
     static double streckeZuRefpunkt;
+    public SimpleARDroneModel(){
+        initialize();
+    }
+    
     
     public void tickPerDeciSecond(){
         
@@ -348,5 +365,140 @@ public class SimpleARDroneModel implements DroneControl {
            
         return tempSpeed;
     }
+    //DRONE
+    	private void initialize() {
+		ardrone = new ARDrone("192.168.1.1");
+		System.out.println("connect drone controller");
+		ardrone.connect();
+		System.out.println("connect drone navdata");
+		ardrone.connectNav();
+		System.out.println("connect drone video");
+		ardrone.connectVideo();
+		System.out.println("start drone");
+		ardrone.start();
+
+		
+
+		ardrone.addAttitudeUpdateListener(new AttitudeListener() {
+			@Override
+			public void attitudeUpdated(float pitch, float roll, float yaw,
+					int altitude) {
+				System.out.println("pitch: " + pitch + ", roll: " + roll
+				 + ", yaw: " + yaw + ", altitude: " + altitude);
+			}
+		});
+
+		ardrone.addBatteryUpdateListener(new BatteryListener() {
+			@Override
+			public void batteryLevelChanged(int percentage) {
+				System.out.println("battery: " + percentage + " %");
+			}
+		});
+
+		ardrone.addStateUpdateListener(new StateListener() {
+			@Override
+			public void stateChanged(DroneState state) {
+				 //System.out.println("state: " + state);
+			}
+		});
+
+		ardrone.addVelocityUpdateListener(new VelocityListener() {
+			@Override
+			public void velocityChanged(float vx, float vy, float vz) {
+				 System.out.println("vx: " + vx + ", vy: " + vy + ", vz: " +
+				 vz);
+			}
+		});
     
+
+        
+		addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				ardrone.stop();
+			}
+
+			public void keyPressed(KeyEvent e) {
+				int key = e.getKeyCode();
+				int mod = e.getModifiersEx();
+
+				boolean shiftflag = false;
+				if ((mod & InputEvent.SHIFT_DOWN_MASK) != 0) {
+					shiftflag = true;
+				}
+
+				switch (key) {
+				case KeyEvent.VK_ENTER:
+					ardrone.takeOff();
+					break;
+				case KeyEvent.VK_SPACE:
+					ardrone.landing();
+					break;
+				case KeyEvent.VK_S:
+					ardrone.stop();
+					break;
+				case KeyEvent.VK_LEFT:
+					if (shiftflag)
+						ardrone.spinLeft();
+					else 
+						ardrone.goLeft();
+					break;
+				case KeyEvent.VK_RIGHT:
+					if (shiftflag)
+						ardrone.spinRight();
+					else
+						ardrone.goRight();
+					break;
+				case KeyEvent.VK_UP:
+					if (shiftflag)
+						ardrone.up();
+					else
+						ardrone.forward();
+					break;
+				case KeyEvent.VK_DOWN:
+					if (shiftflag)
+						ardrone.down();
+					else
+						ardrone.backward();
+					break;
+				case KeyEvent.VK_1:
+					ardrone.setHorizontalCamera();
+					// System.out.println("1");
+					break;
+				case KeyEvent.VK_2:
+					ardrone.setHorizontalCameraWithVertical();
+					// System.out.println("2");
+					break;
+				case KeyEvent.VK_3:
+					ardrone.setVerticalCamera();
+					// System.out.println("3");
+					break;
+				case KeyEvent.VK_4:
+					ardrone.setVerticalCameraWithHorizontal();
+					// System.out.println("4");
+					break;
+				case KeyEvent.VK_5:
+					ardrone.toggleCamera();
+					// System.out.println("5");
+					break;
+				case KeyEvent.VK_R:
+					ardrone.spinRight();
+					break;
+				case KeyEvent.VK_L:
+					ardrone.spinLeft();
+					break;
+				case KeyEvent.VK_U:
+					ardrone.up();
+					break;
+				case KeyEvent.VK_D:
+					ardrone.down();
+					break;
+				case KeyEvent.VK_E:
+					ardrone.reset();
+					break;
+				}
+			}
+		});
+
+        }
+
 }
