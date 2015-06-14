@@ -32,6 +32,11 @@ public class SimpleARDroneModel implements DroneControl {
     static boolean steigen = true;
     static boolean evade = false;
     
+    static boolean initialized = false;
+    static boolean takeoffed = false;
+    
+    static int refpoint2 = 0;
+    
     ARDroneActor droneActor;
     ArrayList<Actor> actorList;
     
@@ -72,12 +77,21 @@ public class SimpleARDroneModel implements DroneControl {
     
     static double streckeZuRefpunkt;
     public SimpleARDroneModel(){
-        initialize();
+        
     }
     
     
     public void tickPerDeciSecond(){
         
+        if(!initialized){
+            initialize();
+            initialized = true;
+        }
+        if(!takeoffed){
+            ardrone.takeOff();
+            takeoffed= true;
+            
+        }
         
         if(droneActor==null){
             droneActor = World.getDrone();
@@ -142,6 +156,16 @@ public class SimpleARDroneModel implements DroneControl {
                     System.out.println("Wegpunkt erreicht!");
                     checkpointReached = true;
                      
+                    if(refpoint2 == 0){
+                        ardrone.spinLeft(30);
+                    }
+                    if(refpoint2 == 1){
+                        ardrone.spinRight(40);
+                    }
+                    if(refpoint2 == 3){
+                        ardrone.landing();
+                    }
+                    refpoint2++;
                 }
                
                 //Fliege das Scenario
@@ -153,15 +177,17 @@ public class SimpleARDroneModel implements DroneControl {
                 if(evade||evadePuffer>0){
                     //Ausweichen statt auf Referenzpunkt zuzufliegen
                     System.out.println("Kollision");
-                    
+                    double [] temptempVec = new double[3];
                     evadeVec = new double[3];
-                    int alpha= -10;
+                    int alpha= -20;
                     evadeVec[0] = richtungsVec[0]*Math.cos(Math.toRadians(alpha))-richtungsVec[1]*Math.sin(Math.toRadians(alpha));
                     evadeVec[1] = richtungsVec[0]*Math.sin(Math.toRadians(alpha))+richtungsVec[1]*Math.cos(Math.toRadians(alpha));
                     evadeVec[2] = richtungsVec[2];
-                    richtungsVec = getRichtung(richtungsVec, evadeVec, 1);
+                  
+                      temptempVec = getRichtung(richtungsVec, evadeVec, 1);
+                      richtungsVec = temptempVec;
                     evadePuffer--;
-                            
+                           
                     move();
                     
                 } else {
@@ -185,7 +211,7 @@ public class SimpleARDroneModel implements DroneControl {
     
     public void move(){
         
-        checkCollision();
+       // checkCollision();
           
         droneActor.setPosition(position[0]+aktSpeed*richtungsVec[0],
                                position[1]+aktSpeed*richtungsVec[1],
@@ -205,10 +231,10 @@ public class SimpleARDroneModel implements DroneControl {
             double colY = (double)tempActor.getAttribute("y");
             double colZ = (double)tempActor.getAttribute("z");
             
-            for(double j=0;j<=weitblick;j+=0.2){
-                if(position[0]+weitblick*richtungsVec[0]>=colPos[0]&&position[0]+weitblick*richtungsVec[0]<=colPos[0]+colX){
-                    if(position[1]+weitblick*richtungsVec[1]>=colPos[1]&&position[1]+weitblick*richtungsVec[1]<=colPos[1]+colY){
-                        if(position[2]+weitblick*richtungsVec[2]>=colPos[2]&&position[2]+weitblick*richtungsVec[2]<=colPos[2]+colZ){
+            for(double j=0;j<=weitblick;j+=0.1){
+                if(position[0]+weitblick*richtungsVec[0]>colPos[0]&&position[0]+weitblick*richtungsVec[0]<colPos[0]+colX){
+                    if(position[1]+weitblick*richtungsVec[1]>colPos[1]&&position[1]+weitblick*richtungsVec[1]<colPos[1]+colY){
+                        if(position[2]+weitblick*richtungsVec[2]>colPos[2]&&position[2]+weitblick*richtungsVec[2]<colPos[2]+colZ){
                             evade = true;
                             evadePuffer = 10;
                             System.out.println("Pos: "+ position[0]+", "+position[1]+", "+position[2]);
@@ -410,7 +436,7 @@ public class SimpleARDroneModel implements DroneControl {
 			}
 		});
     
-
+/*
         
 		addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
@@ -497,7 +523,7 @@ public class SimpleARDroneModel implements DroneControl {
 					break;
 				}
 			}
-		});
+		});*/
 
         }
 
